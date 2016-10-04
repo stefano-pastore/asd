@@ -1,0 +1,222 @@
+\documentclass[11pt,a4paper,oneside]{article}
+\usepackage{fullpage}
+\usepackage[italian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{array}
+\usepackage{listings}
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{bm}
+
+%opening
+\title{Raccolta di esercizi per il corso di\\\Huge{Algoritmi e Strutture Dati}}
+\author{Stefano Pastore}
+
+\begin{document}
+
+\maketitle
+\pagebreak
+%
+% TEMA D'ESAME DEL 15 FEBBRAIO 2010
+%
+\section*{Tema d'esame del 15 febbraio 2010}
+\subsection*{Esercizio 1} Assumendo che $f_1$, $f_2$, $g_1$ e $g_2$ siano funzioni asintoticamente positive e crescenti, si dimostri la verità o la falsità della seguente affermazione: se
+$\log{f_1(n)} = \Theta(\log{g_1(n)})$ e \linebreak $\log{f_2(n)} = \Theta(\log{g_2(n)})$
+allora $f_1(n) \cdot f_2(n) = \Theta(g_1(n) \cdot g_2(n))$.
+\subsection*{Esercizio 2} Si consideri la seguente equazione di ricorrenza:
+$$
+T(n) = 
+\begin{cases}
+1 & \text{se } n \leq 2 \\
+2T(n/2)+T(n/4)+n^3& \text{se } n > 2
+\end{cases}
+$$
+Trovare la stima asintotica più vicina possibile a $T(n)$.
+\subsection*{Esercizio 3} Sia dato un albero binario di ricerca $T$ (i cui nodi contengono solo la chiave ed i puntatori destro e sinistro), un possibile valore di chiave $k$, due valori $k_{min}$ e $k_{max}$ e un valore numerico $x > 0$.
+\begin{itemize}
+	\item Scrivere un algoritmo ricorsivo efficiente che cancelli da $T$ ogni nodo diverso dalla radice dell'albero che soddisfa la seguente proprietà: \textit{contiene una chiave pari, compresa tra $k_{min}$ e $k_{max}$ e minore di $k$ ed è radice di un sottoalbero contenente più di $x$ nodi con chiave pari minore di $k$.}\\\\Si noti che la proprietà dei nodi da cancellare è da intendersi rispetto all'albero originario $T$ in ingresso.
+	\item Con riferimento all'esercizio precedente, quali modifiche apportereste all'algoritmo se venisse meno l'esclusione a priori della radice dell'albero $T$ dai nodi che possono essere cancellati?\\\\Non è ammesso l'uso di passaggio di parametri per riferimento né l'impiego di variabili globali.
+\end{itemize}
+\subsection*{Esercizio 4} Dato un grafo orientato $G$ e un insieme di nodi $X \subseteq V$ rappresentato come un array. Si definisca un algoritmo lineare sulla dimensione del grafo che decida se è vera la seguente proprietà: $$\text{\textit{per ogni }} x,y \in X, CFC(x) = CFC(y)$$ dove $CFC(v)$ rappresenta la componente fortemente connessa del vertice $v$.
+\pagebreak
+%
+% TEMA D'ESAME DEL 15 FEBBRAIO 2010
+%
+\section*{Tema d'esame del 22 giugno 2011}
+\subsection*{Esercizio 1} Dimostrare per esteso, ricavando le costanti necessarie, le relazioni asintotiche sotto riportate:
+\begin{enumerate}
+	\item $n\log_2(n)-3n-18 = \Omega(n)$
+	\item $3n^2+2n+3 = \Theta(n^2-7)$
+\end{enumerate}
+\subsection*{Esercizio 2} Si derivi, mostrando per esteso il procedimento seguito, l'equazione di ricorrenza per la funzione $T(n)$ che descrive il tempo di esecuzione dell'algoritmo sotto riportato. Si risolva, poi, l'equazione individuando la stima asintotica più vicina possibile a $T(n)$.
+
+\begin{lstlisting}[mathescape=true]
+Algo(n)
+if $n \leq 2$ then return 0
+else
+	y = Algo(n/3)
+	i = $2^n$
+	while i$\geq 2$ do
+		j = $\lfloor\frac{1}{2}\log_2(i)\rfloor$
+		while j $> 0$
+			i = $\frac{i}{2}$
+			j = j-1
+		z = Algo(n/2)
+		return (z+y)
+\end{lstlisting}
+
+\subsection*{Esercizio 3} Sia dato un albero binario di ricerca $T$, i cui nodi contengano esclusivamente una chiave intera, un puntatore al figlio sinistro e uno al figlio destro.\\Si definisca un algoritmo ricorsivo efficiente che, dati i valori interi $h_1 \geq 1, h_2 \geq 1, k_1 \geq 0, k_2 \geq 0$, cancelli dall'albero $T$ tutti i nodi che, nell'albero originale fornito in ingresso, soddisfano la seguente proprietà: \textit{hanno chiave $k$ pari tali che $k_1 \leq k \leq k_2$ e sono radici di sotto-alberi il cui percorso esterno ha lunghezza $h$ che soddisfa $h_1 \leq h \leq h_2$}.\\\\Si ricorda che la lunghezza del percorso esterno in un albero radicato in un nodo $x$ è la somma delle lunghezze dei percorsi da $x$ ad una foglia.\\\\Non è ammesso l'uso di passaggio di parametri per riferimento né l'impiego di variabili globali.
+\subsection*{Esercizio 4} Si supponga di voler disporre di una fila indiana di $n$ persone. Si ha a disposizione un insieme $A$ di $m$ affermazioni del tipo \textit{la persona $i$ detesta la persona $j$}. Se $i$ detesta $j$, allora si vuol evitare di mettere $i$ dietro a $j$. Definire un algoritmo che verifichi se è possibile disporre le persone in fila in modo che \textit{nessuna persona stia davanti ad una persona che le detesta} e, in caso affermativo, produca una tale disposizione. L'algoritmo deve avere complessità $O(n+m)$.
+\pagebreak
+%
+% TEMA D'ESAME DEL 15 LUGLIO 2011
+%
+\section*{Tema d'esame del 15 luglio 2011}
+\subsection*{Esercizio 1} Dimostrare per esteso, ricavando le costanti necessarie, le relazioni asintotiche sotto riportate:
+\begin{itemize}
+	\item $n\log{n} - 10n+4 = \Omega(2n\log{n})$
+	\item $2n^2+4n+3 = O(n^2-n+7)$.
+\end{itemize}
+\subsection*{Esercizio 2} Si calcoli, riportando per esteso il ragionamento seguito, il tempo di esecuzione dell'algoritmo sotto riportato.
+
+\begin{lstlisting}[mathescape=true]
+Algoritmo(n)
+$k = 1$
+$t = 0$
+$s = 1$
+while $k \leq n$ do
+	$j = k$
+	while $j \leq n$ do
+		$s = j+k$
+		$j = 2 \cdot j$
+	$t = t+1$
+	$k = 2 \cdot k$
+return $s+t$
+\end{lstlisting}
+
+\subsection*{Esercizio 3} Sia dato un albero binario di ricerca $T$, i cui nodi contengano esclusivamente una chiave intera, un puntatore al figlio sinistro e uno al figlio destro. Sia dato, inoltre, un array $A$ contenente possibili chiavi intere ordinate in modo crescente.\\Si definisca un algoritmo ricorsivo efficiente che cancelli dall'albero $T$ tutti i nodi che sono a distanza $h\geq 1$ dalla radice dell'albero fornito in ingresso e che contengono una chiave presente nell'array $A$. Non è possibile utilizzare parametri passati per riferimento né variabili globali.
+\subsection*{Esercizio 4} Sia dato un grafo orientato $G=(V,E)$ e un insieme $A \subseteq V$. Si definisca la distanza $v \in V$ da $A$ quel valore di $k$ tale che:
+\begin{itemize}
+	\item $\delta(x,v) = k$  per qualche $x \in A$
+	\item $\delta(y, v) \geq k$ per ogni $y \in A$
+\end{itemize}
+dove $\delta(x,y)$ denota l'usuale funzione di distanza tra i vertici $x$ ed $y$ nel grafo $G$. Si definisca un algoritmo che, in tempo $O(|V|+|E|)$, calcoli la distanza di un vertice $v \in V$ dall'insieme $A$.
+\pagebreak
+%
+% TEMA D'ESAME DEL 22 SETTEMBRE 2011
+%
+\section*{Tema d'esame del 22 settembre 2011}
+\subsection*{Esercizio 1} Dimostrare per esteso, ricavando le costanti necessarie, le relazioni asintotiche sotto riportate:
+\begin{itemize}
+	\item $2n = O(n-3\log_2(n))$
+	\item $3n^2 -6n^2+8n = \Theta(n^3)$.
+\end{itemize}
+\subsection*{Esercizio 2} Si calcoli, mostrando per esteso il procedimento seguito, il tempo di esecuzione dell'algoritmo sotto riportato.
+
+\begin{lstlisting}[mathescape=true]
+Algoritmo(n)
+	$i = 4$
+	$z = 0$
+	while $i < n$ do
+		$j = \frac{i}{2}$
+		while $j \geq 1$ do
+			$i = i+2$
+			$z = z+1$
+			$j = j-2$
+		$i = 2\cdot i$
+return z
+\end{lstlisting}
+\subsection*{Esercizio 3} Sia dato un albero binario $T$ (i cui nodi contengono esclusivamente una chiave intera, un puntatore al figlio sinistro e uno al figlio destro) che sia parzialmente ordinato, cioè tale che ogni nodo di $T$ contenga una chiave non minore delle chiavi di entrambi i suoi figli.\\\\Si definisca un algoritmo ricorsivo efficiente che, dati i valori interi $k_1 \leq k_2$ ed un valore intero $x$, cancelli dall'albero $T$ tutti i nodi che, nell'albero originale $T$ fornito in ingresso, soddisfano la seguente proprietà: \textit{hanno chiave pari e tale che $k_1 \leq k \leq k_2$ e sono radici di sottoalberi contenenti almeno $x$ nodi con chiave compresa tra $k_1$ e $k_2$.}\\\\Non è possibile utilizzare parametri passati per riferimento né variabili globali.
+\subsection*{Esercizio 4} Sia dato un grafo $G=(V,E)$ rappresentato tramite liste di adiacenza. Si definisca un algoritmo iterativo che verifichi se $G$ è aciclico o no. In caso la risposta sia negativa, l'algoritmo deve fornire in output un possibile percorso contenente un ciclo. Il tempo impiegato dall'algoritmo deve essere $O(|V|+|E|)$.
+\pagebreak
+%
+% TEMA D'ESAME DEL 26 GENNAIO 2012
+%
+\section*{Tema d'esame del 26 gennaio 2012}
+\subsection*{Esercizio 1}
+\subsection*{Esercizio 2}
+\subsection*{Esercizio 3}
+\subsection*{Esercizio 4}
+\pagebreak
+%
+% TEMA D'ESAME DEL 23 FEBBRAIO 2012
+%
+\section*{Tema d'esame del 26 gennaio 2012}
+\subsection*{Esercizio 1} Dimostrare per esteso la verità o la falsità delle seguenti affermazioni:
+\begin{itemize}
+	\item $n^2 = \Omega \left(n^{log_2{(4/5)}} \cdot 5^{log_2{(n)}}\right)$
+	\item si assuma che $f$ e $g$ siano funzioni asintoticamente positive e crescenti. Allora \linebreak $\log(f(n)) = \Theta(g(n))$ implica $f(n) = \Theta(2^{g(n)})$.
+\end{itemize}
+\subsection*{Esercizio 2} Si calcoli, mostrando per esteso il procedimento seguito, il tempo di esecuzione dell'algoritmo sotto riportato.
+
+\begin{lstlisting}[mathescape=true]
+Algo(n)
+$y = 2^n$
+$i = n$
+$x = log_2(y)$
+	while $x > 1$ do
+		$y = y \cdot 2^x$
+		while $y > 2^x$ do
+			$i = i+2$
+			$y = y / 2$
+		$x = x/2$
+return $i$
+\end{lstlisting}
+\subsection*{Esercizio 3} Si definisca un algoritmo ricorsivo efficiente che, dati un albero binario di ricerca $T$ (i cui nodi contengono esclusivamente un campo chiave, un campo figlio sinistro e un campo figlio destro), un intero positivo $x > 0$ ed un valore $k$, cancelli da $T$ il nodo che soddisfa la seguente proprietà: \textit{contiene la più grande chiave minore di $k$ che si trova in $T$ a profondità non minore di $x$}.\\\\Non è possibile utilizzare parametri passati per riferimento né variabili globali.
+\subsection*{Esercizio 4}Si consideri un grafo $G=(V,E)$ ed un sottoinsieme $A \subseteq V$ di vertici e si definisca distanza $\delta(v, A)$ di un vertice $v$ dall'insieme $A$ come la minima tra le distanze del vertice $v$ da un vertice di $A$. Formalmente $\delta(v, A) = \min\{\delta(v,a) \mid a \in A \}$.\\\\Dato un grafo $G=(V,E)$ rappresentato tramite le liste di adiacenza, un insieme $A$ di vertici di $G$ rappresentato come una lista puntata e due vertici $u$ e $v$, si scriva lo pseudo-codice di algoritmo che, in tempo lineare sulla dimensione di $G$ (quindi indipendentemente dalla dimensione del sottoinsieme $A$) verifichi se i due vertici $u$ e $v$ sono alla stessa distanza da $A$.
+\pagebreak
+%
+% TEMA D'ESAME DEL 25 GIUGNO 2012
+%
+\section*{Tema d'esame del 25 giugno 2012}
+\subsection*{Esercizio 1} 
+\begin{itemize}
+	\item Dimostrare la verità o la falsità della seguente affermazione: siano $f$ e $g$ due funzioni asintoticamente crescenti e positive e $j$ e $k$ due valori non negativi. Allora $f^k(n) = \Theta(2^{g^j(n)})$ implica $\log_2f(n) = \Theta(g(n))$.
+	\item Dimostrare per esteso, ricavando le costanti necessarie, la verità della seguente affermazione: $n\log_2(n)-3n-18 = \Theta(n\log_2(n))$.
+\end{itemize}
+\subsection*{Esercizio 2} Si calcoli, mostrando per esteso il procedimento seguito, il tempo di esecuzione dell'algoritmo sotto riportato:
+\begin{lstlisting}[mathescape=true]
+Algo(n)
+$i = 1$
+while $i < n$ do
+	$j = \frac{i}{2}$
+	while $j > 0$ do
+		$i = i+2$
+		$j = j-3$
+	$i = 2 \cdot i$
+return
+\end{lstlisting}
+\subsection*{Esercizio 3} Sia dato un albero binario parzialmente ordinato $T$, in cui ogni nodo ha chiave non maggiore di quella dei suoi figli. I nodi $T$ contengono esclusivamente un campo chiave, un campo figlio sinistro ed un campo figlio destro. Si definisca un algoritmo ricorsivo efficiente che, dati tre valori interi strettamente positivi $x, k_1 \leq k_2$ e l'albero $T$, cancelli da $T$ ogni nodo che soddisfa la seguente proprietà: \textit{contiene una chiave $k$ di valore compreso tra $k_1$ e $k_2$ ed è radice di un albero che contiene al massimo $x$ nodi con chiave compresa tra $k_1$ e $k_2$}.\\\\Non è possibile utilizzare parametri passati per riferimento né variabili globali.
+\subsection*{Esercizio 4} Sia dato un grafo $G=(V,E)$ rappresentato tramite liste di adiacenza e due sottoinsiemi di vertici $A$ e $B$. Si definisca la distanza $\delta(A, B)$ nel seguente modo:
+$$
+\delta(A,B) = 
+\begin{cases}
+i & \text{se per ogni} a \in A \text{ esiste un } b \in B \text{ tale che } \delta(a,b) = i\\
+\infty& \text{altrimenti}.
+\end{cases}
+$$
+Si definisca un algoritmo che, dati in ingresso il grafo $G$, gli insiemi $A$ e $B$, e un intero $x$, verifichi in tempo lineare sulla dimensione del grafo se $\delta(A,B) = x$.
+\pagebreak
+%
+% TEMA D'ESAME DEL 26 GENNAIO 2012
+%
+\section*{Tema d'esame del 26 gennaio 2012}
+\subsection*{Esercizio 1}
+\subsection*{Esercizio 2}
+\subsection*{Esercizio 3}
+\subsection*{Esercizio 4}
+\pagebreak
+%
+% TEMA D'ESAME DEL 26 GENNAIO 2012
+%
+\section*{Tema d'esame del 26 gennaio 2012}
+\subsection*{Esercizio 1}
+\subsection*{Esercizio 2}
+\subsection*{Esercizio 3}
+\subsection*{Esercizio 4}
+\pagebreak
+\end{document}

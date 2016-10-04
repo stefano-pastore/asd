@@ -1,0 +1,222 @@
+\documentclass[11pt,a4paper,oneside]{article}
+\usepackage{fullpage}
+\usepackage[italian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{array}
+\usepackage{listings}
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{pgfplots}
+\usepackage{tcolorbox}
+\usepackage{subcaption}
+\pgfplotsset{compat=1.12}
+\usetikzlibrary{positioning}
+\usetikzlibrary{decorations.markings}
+\usepackage[font={footnotesize,it},width=.5\textwidth]{caption}
+
+%opening
+\title{Raccolta di appunti per il corso di\\\Huge{Algoritmi e Strutture Dati}}
+\author{Stefano Pastore}
+\date{\tiny{aggiornato al \today}}
+
+\begin{document}
+
+\maketitle
+\pagebreak
+\tableofcontents
+\pagebreak
+
+\section*{Disclaimer e licenza}
+\paragraph*{} Questi appunti sono rilasciati sotto licenza \href{https://creativecommons.org/licenses/by-nc-sa/4.0/}{Creative Commons 4.0 by-nc-sa}. I sorgenti sono disponibili sul mio \href{http://bitbucket.org/}{repository} dedicato.
+\paragraph*{} Si fa presente che questo documento viene stilato senza pretese di assoluta correttezza né di esaustività. Qualora si rinvengano degli errori, è possibile segnalarli all'indirizzo \href{mailto:ste.pastore@studenti.unina.it}{ste.pastore@studenti.unina.it}.
+\pagebreak
+\section{Definizioni basilari}
+\subsection{Algoritmi e complessità}
+\paragraph*{} Un algoritmo è una procedura ben definita per risolvere un problema, vale a dire, una sequenza finita di passi che, se svolti da un esecutore, conducono alla soluzione del problema.
+\paragraph*{} Nella stesura di un algoritmo risulta sempre di cruciale importanza ottenere una misura delle risorse computazionali che esso impiega per risolvere un problema. Alcuni esempi sono il tempo di esecuzione, la memoria impiegata o la banda di comunicazione.
+\paragraph*{} Nello studio ci concentreremo in questa sede sul \textbf{tempo di esecuzione} di un programma, che generalmente può dipendere da vari fattori quali l'hardware su cui viene eseguito, il compilatore o l'interprete che viene utilizzato, carico di lavoro sull'unità di calcolo. Tuttavia anziché analizzare la complessità di tempo di un algoritmo su macchine specifiche e quindi con caratteristiche hardware e software potenzialmente drammaticamente diverse, punteremo allo studio del \textit{tempo intrinseco} necessario all'algoritmo per giungere alla soluzione in modo più astratto, impiegando il modello computazionale RAM, che si basa sulla macchina di Turing.
+\paragraph*{}Proprio al fine di effettuare questo studio più astratto, possiamo pensare di associare ad ogni passo dell'algoritmo il numero di operazioni necessarie per eseguirlo. La somma di tutte le operazioni elementari effettuate su ogni passo danno come risultato una formula che nei fatti è una vera e propria \textbf{funzione matematica}.
+\paragraph*{}Sia $T(n)$ una funzione che esprime il tempo di esecuzione dell'algoritmo associato $Algo(n)$, dove $n$ è l'input di un certo tipo e dotato di una certa dimensione.
+\subsubsection{Confrontare funzioni di tempo}
+\paragraph*{}Supponiamo di avere quattro algoritmi diversi tra loro ma che risolvono tutti un certo problema $P$. Come possiamo stabilire qual è l'algoritmo migliore? Una volta contato il numero di operazioni elementari di ogni algoritmo, supponiamo di avere seguenti dati come mostrati in tabella \ref{tab:algos}:
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|c|l|}
+		\hline
+		\textbf{Algoritmo}&\textbf{Tempo di esecuzione}\\\hline 
+		Algoritmo A &  $T_A(n) = 9n^2+9n+4$ \\ 
+		Algoritmo B &  $T_B(n) = 2n^2+6n+4$\\ 
+		Algoritmo C &  $T_C(n) = 6n+4$\\ 
+		Algoritmo D &  $T_D(n) = 5$ \\ \hline
+	\end{tabular}
+	\caption{Confronto tra funzioni di tempo di esempio associate a quattro algoritmi che risolvono un medesimo problema $P$.}
+	\label{tab:algos}
+\end{table}
+
+Naturalmente l'algoritmo migliore sarà quello che per $n \to \infty$ detiene la minore velocità di crescita. Nell'esempio sopra citato l'algoritmo migliore è il $D$ perché per qualsiasi dimensione in input, il tempo di esecuzione rimane costante e dunque non cresce.
+
+\paragraph*{} Al fine di riuscire a confrontare le funzioni di tempo con strumenti ben noti, si introducono le seguenti definizioni.
+\paragraph{\fcolorbox{white}{black}{\color{white}Limite asintotico superiore}} Siano $f(n)$ e $g(n)$ due funzioni. Si dice che $g(n)$ è \textbf{limite asintotico superiore} per $f(n)$ e si scrive $\bm{f(n) = O(g(n))}$ se è possibile riuscire a trovare una costante $c$ positiva tale per cui, per ogni valore $n$ maggiore di un certo $n_0$ positivo fissato, risulta che $f(n) \leq  c\cdot g(n)$ o formalmente: $$\exists c>0, \exists n_0 > 0 : \forall n \geq n_0,\,f(n) \leq c\cdot g(n)$$
+\subparagraph*{Un esempio} Supponiamo di avere due funzioni. Sia $f(n) = n$ e $g(n) = e^n-\frac{5}{2}n$ e per avere un'idea immediata, visualizziamone l'andamento.
+
+\begin{figure}[hb]
+\centering
+\begin{tikzpicture}
+\begin{axis}[domain=0:5, samples=50,grid=major, legend style={legend cell align=left, font=\tiny},
+restrict y to domain=0:5,xlabel=$\text{Dimensione dell'input}$,ylabel=$\text{Tempo di esecuzione}$, legend pos=north west]
+\addplot [color=red]    {x};
+\addplot [color=green]  {e^x-5/2*x};
+
+\legend{$n$, $e^n-\frac{5}{2}n$}
+\draw [thick,dashed] (2,\pgfkeysvalueof{/pgfplots/ymin}) -- (2,\pgfkeysvalueof{/pgfplots/ymax});
+% \draw [very thick,dotted] (\pgfkeysvalueof{/pgfplots/xmin},e^2-5/2*2) -- (\pgfkeysvalueof{/pgfplots/xmax},e^2-5/2*2);
+\end{axis}
+\end{tikzpicture}
+\caption{In figura $f(n) = n$ e $g(n) = e^n-\frac{5}{2}n$.}
+\label{fig:asymsup}
+\end{figure}
+
+\paragraph*{}Guardando la figura \ref{fig:asymsup} è facile convincersi che $g(n)$ scelta nell'esempio sia un limite superiore asintotico. Infatti opportunamente scelti $c = 1$ e $n_0 = 2$, si può verificare che $g(n)$ rimane sempre al di sopra di $f(n)$ per qualsiasi valore a partire da $n_0$ fissato in poi.\\
+
+\begin{tcolorbox}[title=Nota bene]
+	Nel caso di quest'esempio avrei potuto scegliere un $n_0$ avente un qualsiasi valore superiore a $2$ e la proposizione, che definisce il limite superiore asintotico, sarebbe comunque risultata vera. Diversamente non avrei potuto scegliere $n_0 = \frac{1}{16}$ poiché per $n = n_0 = 1$ la funzione $g(n)$ si trova al di sotto di $f(n)$, il che violerebbe $\forall n \geq n_0,\,f(n) \leq c\cdot g(n)$.
+\end{tcolorbox}
+\pagebreak
+\paragraph{\fcolorbox{white}{black}{\color{white}Limite asintotico inferiore}} Siano $f(n)$ e $g(n)$ due funzioni. Si dice che $g(n)$ è \textbf{limite asintotico inferiore} per $f(n)$ e si scrive $\bm{f(n) = \Omega(g(n))}$ se è possibile riuscire a trovare una costante $c$ positiva tale per cui, per ogni valore $n$ maggiore di un certo $n_0$ positivo fissato, risulta che $f(n) \geq  c\cdot g(n)$ o formalmente: $$\exists c>0, \exists n_0 > 0 : \forall n \geq n_0,\,f(n) \geq c\cdot g(n)$$
+
+\subparagraph*{Un esempio} Supponiamo di avere due funzioni. Sia $f(n) = n^3-\frac{1}{3}n$ e $g(n) = n^2$. Per avere subito un'idea di come queste due funzioni si comportano, visualizziamone l'andamento.
+
+\begin{figure}[hb]
+	\centering
+	\begin{tikzpicture}
+	\begin{axis}[domain=0:25, samples=150,grid=major, legend style={legend cell align=left, font=\tiny},
+	restrict y to domain=0:25,xlabel=$\text{Dimensione dell'input}$,ylabel=$\text{Tempo di esecuzione}$, legend pos=south east]
+	\addplot [thick,color=red]    {x^2};
+	\addplot [thick,color=green]  {x^3-1/3*x};
+	
+	\legend{$n^2$, $n^3-\frac{1}{3}n$}
+	\draw [thick,dashed] (2,\pgfkeysvalueof{/pgfplots/ymin}) -- (2,\pgfkeysvalueof{/pgfplots/ymax});
+	% \draw [very thick,dotted] (\pgfkeysvalueof{/pgfplots/xmin},e^2-5/2*2) -- (\pgfkeysvalueof{/pgfplots/xmax},e^2-5/2*2);
+	\end{axis}
+	\end{tikzpicture}
+	\caption{In figura $f(n) = n^3-\frac{1}{3}n$ e $g(n) = n^2$.}
+	\label{fig:asyminf}
+\end{figure}
+\paragraph*{} Ancora una volta, dando un'occhiata al grafico delle due funzioni, è lampante accorgersi del fatto che $g(n)$ è limite inferiore asintotico poiché scelte $c = 1$ ed $n_0 = 2$, dal grafico notiamo che la funzione rimane sempre al di sotto di $f(n)$.
+\pagebreak
+\paragraph{\fcolorbox{white}{black}{\color{white}Limite asintotico stretto}}\label{par:asymstr} Siano $f(n)$ e $g(n)$ due funzioni. Si dice che $g(n)$ è \textbf{limite asintotico stretto} per $f(n)$ e si scrive $\bm{f(n) = \Theta(g(n))}$ se è possibile riuscire a trovare due costanti $c_1$ e $c_2$ positive tali per cui, per ogni valore $n$ maggiore di un certo $n_0$ positivo fissato, risulta che $c_1\cdot g(n) \leq f(n) \leq  c_2\cdot g(n)$ o formalmente: $$\exists c_1>0, \exists c_2 > 0, \exists n_0 > 0 : \forall n \geq n_0,\,c_1\cdot g(n) \leq f(n) \leq c_2\cdot g(n)$$
+
+\subparagraph*{Un esempio} Supponiamo di avere due funzioni. Sia $f(n) = 2n^2-\frac{1}{3}n$ e $g(n) = n^2+2n$. Per avere subito un'idea di come queste due funzioni si comportano, visualizziamone l'andamento.
+\begin{figure}[hb]
+	\centering
+	\begin{tikzpicture}
+	\begin{axis}[domain=0:50, samples=500,grid=major, legend style={legend cell align=left, font=\tiny},
+	restrict y to domain=0:150,xlabel=$\text{Dimensione dell'input}$,ylabel=$\text{Tempo di esecuzione}$, legend pos=south east]
+	\addplot [thick,color=red]    {x^2+2*x};
+	\addplot [thick,color=green]  {2*x^2-1/3*x};
+	\addplot [thick,color=red]    {4*(x^2+2*x)};
+	
+	\legend{$n^2+2n$, $2n^2-\frac{1}{3}n$, $4n^2-8n$}
+	\draw [thick,dashed] (3,\pgfkeysvalueof{/pgfplots/ymin}) -- (3,\pgfkeysvalueof{/pgfplots/ymax});
+	% \draw [very thick,dotted] (\pgfkeysvalueof{/pgfplots/xmin},e^2-5/2*2) -- (\pgfkeysvalueof{/pgfplots/xmax},e^2-5/2*2);
+	\end{axis}
+	\end{tikzpicture}
+	\caption{In figura $f(n) = 2n^2-\frac{1}{3}n$ e $g(n) = n^2+2n$.}
+	\label{fig:asymstr}
+\end{figure}
+\paragraph*{}Possiamo concludere che in questo caso $f(n) = \Theta(g(n))$ dal momento che per $c_1 = 1$, $c_2 = 4$ e per qualsivoglia $n$ maggiore di $n_0 = 3$, la funzione $f(n)$ rimane intrappolata tra le altre due, cioè, $1 \cdot (n^2+2n) \leq 2n^2-\frac{1}{3}n \leq 4 \cdot (n^2+2n)$.
+\pagebreak
+\subsubsection{Correlazione tra limite di funzioni e limiti asintotici}
+\paragraph*{}Sino a questo punto si son analizzati l'andamento e la crescita in maniera naïf, basando il ragionamento sui grafici di funzioni. Sarebbe opportuno dare una rappresentazione non troppo formale, ma sufficientemente convincente che consenta di poter effettuare uno studio di carattere più analitico. 
+\paragraph*{} Siano $f(n)$ e $g(n)$ due qualsivoglia funzioni. In particolare dimostriamo informalmente che 
+\begin{equation}
+\lim_{n\to \infty} \frac{f(n)}{g(n)} = k > 0 \Leftrightarrow f(n) = \Theta(g(n))
+\label{eq:equiv}
+\end{equation}
+è vera.
+\paragraph*{\fcolorbox{white}{black}{\color{white}Dimostrazione}} Per la definizione di $\Theta(.)$ che conosciamo, data nel paragrafo \ref{par:asymstr}, sappiamo che $\exists c_1>0, \exists c_2 > 0, \exists n_0 > 0 : \forall n \geq n_0,\,c_1\cdot g(n) \leq f(n) \leq c_2\cdot g(n)$. Tralasciando per il momento i quantificatori esistenziali e concentrandoci solamente sulla parte della definizione che coinvolge le disuguaglianze abbiamo che: 
+\begin{equation}
+c_1 \cdot g(n) \leq f(n) \leq c_2\cdot g(n) \Rightarrow c_1 \leq \frac{f(n)}{g(n)} \leq c_2 \label{eq:eq1}
+\end{equation} dopo aver supposto che prendendo un punto $n$ all'interno dell'intervallo di interesse, $g(n)$ non sia nulla e venga preservata la relazione d'ordine. La disequazione alla quale siamo giunti ci indica che il rapporto tra le due funzioni $f$ e $g$ è limitato tra due costanti. Un esempio è mostrato in figura \ref{fig:limits}.
+
+\begin{figure}[hb]
+	\centering
+	\begin{tikzpicture} [label/.style={%
+		postaction={ decorate,transform shape,
+		decoration={ markings, mark=at position .5 with \node #1;}}}]
+	\begin{axis}[ticks=none,domain=0:500, samples=1250,grid=major, legend style={legend cell align=left, font=\tiny},
+	restrict y to domain=0:100,xlabel=$\text{Dimensione dell'input}$,ylabel=$\text{Tempo di esecuzione}$, legend pos=south east]
+	\addplot [thick,color=red]    {(3*x^2-x)/(x^2+x)};
+	
+	\legend{$\frac{f(n)}{g(n)}$}
+	\draw [thick,dashed,label={[below]{$n_0$}}] (30,\pgfkeysvalueof{/pgfplots/ymin}) -- (30,\pgfkeysvalueof{/pgfplots/ymax});
+	\draw [thick,dotted,label={[above]{$c_1$}}] (\pgfkeysvalueof{/pgfplots/xmin},3) -- (\pgfkeysvalueof{/pgfplots/xmax},3);
+	\draw [thick,dotted,label={[below]{$c_2$}}] (\pgfkeysvalueof{/pgfplots/xmin},2.7) -- (\pgfkeysvalueof{/pgfplots/xmax},2.7);
+	\end{axis}
+	\end{tikzpicture}
+	\caption{Il rapporto tra le due funzioni $f$ e $g$ scelte è chiaramente limitato tra le due costanti $c_1$ e $c_2$ a partire da un fissato $n_0$.}
+	\label{fig:limits}
+\end{figure}
+\paragraph*{} Possiamo osservare che da $n_0$ in avanti la funzione deve rimanere intrappolata tra i valori di queste due costanti e non potrebbe essere altrimenti. Se immaginassimo per assurdo che per $n \to \infty$ il rapporto tra $f$ e $g$ tendesse ad infinito, allora il limite del rapporto andrebbe al di sopra del valore di $c_2$ tracciato, cosa che è in contraddizione con quanto ricavato nella disequazione \ref{eq:eq1}. In maniera analoga, il limite del rapporto tanto meno può tendere a $0$ per $n \to \infty$, dal momento che $c_1$ e $c_2$ le abbiamo supposte come strettamente positive.
+\paragraph*{}Nel mettere in correlazione le due definizioni come mostrato nella proposizione \ref{eq:equiv} dobbiamo porci il problema di come trovare le costanti $n_0$, $c_1$, $c_2$ a partire dal valore $k$ del limite e viceversa. Allora supponiamo che sia vera $\lim_{n \to \infty} \frac{f(n)}{g(n)} = k > 0$ e diamone un'interpretazione geometrica. Rivisitando l'esempio in figura \ref{fig:limits} abbiamo:
+
+\begin{figure}[hb]
+	\centering
+	\begin{subfigure}[b]{0.4\textwidth}
+	\centering
+	\resizebox{\linewidth}{!}{
+	\begin{tikzpicture} [label/.style={%
+		postaction={ decorate,transform shape,
+			decoration={ markings, mark=at position .5 with \node #1;}}}]
+	\begin{axis}[ticks=none,domain=0:250, samples=500,grid=major, legend style={legend cell align=left, font=\tiny},
+	restrict y to domain=0:100,xlabel=$\text{Dimensione dell'input}$,ylabel=$\text{Tempo di esecuzione}$, legend pos=south east]
+	\addplot [thick,color=red]    {(3*x^2-x)/(x^2+x)};
+	
+	\legend{$\frac{f(n)}{g(n)}$}
+	\draw [thick,dashed,label={[below]{$n_0$}}] (30,\pgfkeysvalueof{/pgfplots/ymin}) -- (30,\pgfkeysvalueof{/pgfplots/ymax});
+	\draw [thick,dotted,label={[below]{$k$}}] (\pgfkeysvalueof{/pgfplots/xmin},3) -- (\pgfkeysvalueof{/pgfplots/xmax},3);
+	\end{axis}
+	\end{tikzpicture}
+	}
+	\caption{Grafico che mostra funzione non decrescente che tende a $k$ dal basso.}
+	\label{fig:tokfrombelow}
+	\end{subfigure}
+	\quad
+	\begin{subfigure}[b]{0.4\textwidth}
+		\centering
+		\resizebox{\linewidth}{!}{
+			\begin{tikzpicture} [label/.style={%
+				postaction={ decorate,transform shape,
+					decoration={ markings, mark=at position .5 with \node #1;}}}]
+			\begin{axis}[ticks=none,domain=0:250, samples=500,grid=major, legend style={legend cell align=left, font=\tiny},
+			restrict y to domain=0:100,xlabel=$\text{Dimensione dell'input}$,ylabel=$\text{Tempo di esecuzione}$, legend pos=south east]
+			\addplot [thick,color=red]    {(3*x^2)/(x^2-x)};
+			
+			\legend{$\frac{f(n)}{g(n)}$}
+			\draw [thick,dashed,label={[below]{$n_0$}}] (30,\pgfkeysvalueof{/pgfplots/ymin}) -- (30,\pgfkeysvalueof{/pgfplots/ymax});
+			\draw [thick,dotted,label={[above]{$k$}}] (\pgfkeysvalueof{/pgfplots/xmin},3) -- (\pgfkeysvalueof{/pgfplots/xmax},3);
+			\end{axis}
+			\end{tikzpicture}
+		}
+		\caption{Grafico che mostra funzione non crescente che tende a $k$ dall'alto.}
+		\label{fig:limits4}
+	\end{subfigure}
+	\caption{Il valore del limite $k$ denota l'equazione della retta che è un asintoto per la funzione costituita dal rapporto tra $f$ e $g$.}
+	\label{fig:tokfromabove}
+\end{figure}
+\paragraph*{}Come si vede chiaramente dai grafici, il rapporto $\dfrac{f(n)}{g(n)}$ può tendere a $k$ dal basso oppure dall'alto. Quindi esaminiamo i due casi schematicamente:
+\begin{description}
+	\item[il rapporto tende dal basso] posso prendere una qualsiasi costante $c_2 \geq k$, dal momento che il limite del rapporto non supera mai $k$ stesso e $c_1 = \frac{f(n_0)}{g(n_0)}$ perché per $n_0$ si otterrà il più piccolo valore di $\frac{f(n)}{g(n)}$, essendo la funzione non decrescente.
+	\item[il rapporto tende dall'alto] posso prendere un qualsiasi $c_1 \leq k$ poiché il rapporto non assume mai valori inferiori a quello dell'asintoto orizzontale $k$ e $c_2 = \frac{f(n_0)}{g(n_0)}$ perché per $n_0$ si otterrà il più grande valore di $\frac{f(n)}{g(n)}$, essendo la funzione non crescente.
+\end{description}
+\pagebreak
+\subsection{Esercizi svolti}
+\end{document}
