@@ -15,4 +15,4 @@ La buona notizia è che se non hai intenzione di utilizzarlo nella tua pratica q
 Fortunatamente ci sono delle [Wiki](https://en.wikibooks.org/wiki/LaTeX) che ti permetteranno di imparare le basi in men che non si dica.
 
 ## Hai altre domande?
-Scrivi a [ste.pastore@studenti.unina.it](mailto:ste.pastore@studenti.unina.it].
+Scrivi a [ste.pastore@studenti.unina.it](mailto:ste.pastore@studenti.unina.it).
