@@ -16,10 +16,17 @@
 \usepackage{pgfplots}
 \usepackage{tcolorbox}
 \usepackage{subcaption}
+\usepackage[makeroom]{cancel}
 \pgfplotsset{compat=1.12}
 \usetikzlibrary{positioning}
 \usetikzlibrary{decorations.markings}
 \usepackage[font={footnotesize,it},width=.5\textwidth]{caption}
+
+\hypersetup{%
+	colorlinks=true,
+	linkcolor=cyan,
+	urlcolor=cyan
+}
 
 %opening
 \title{Raccolta di appunti per il corso di\\\Huge{Algoritmi e Strutture Dati}}
@@ -35,7 +42,7 @@
 
 \section*{Disclaimer e licenza}
 \paragraph*{} Questi appunti sono rilasciati sotto licenza \href{https://creativecommons.org/licenses/by-nc-sa/4.0/}{Creative Commons 4.0 by-nc-sa}. I sorgenti sono disponibili sul mio \href{http://bitbucket.org/}{repository} dedicato.
-\paragraph*{} Si fa presente che questo documento viene stilato senza pretese di assoluta correttezza né di esaustività. Qualora si rinvengano degli errori, è possibile segnalarli all'indirizzo \href{mailto:ste.pastore@studenti.unina.it}{ste.pastore@studenti.unina.it}.
+\paragraph*{} Si fa presente che questo documento viene stilato senza pretese di assoluta correttezza né di esaustività. Qualora si siano rinvenuti degli errori, è possibile segnalarli all'indirizzo\linebreak \href{mailto:ste.pastore@studenti.unina.it}{ste.pastore@studenti.unina.it}. È consultabile il repository di tutto il materiale prodotto a disposizione di chiunque su \href{https://github.com/stefano-pastore/asd}{Github}.
 \pagebreak
 \section{Definizioni basilari}
 \subsection{Algoritmi e complessità}
@@ -218,5 +225,22 @@ c_1 \cdot g(n) \leq f(n) \leq c_2\cdot g(n) \Rightarrow c_1 \leq \frac{f(n)}{g(n
 	\item[il rapporto tende dall'alto] posso prendere un qualsiasi $c_1 \leq k$ poiché il rapporto non assume mai valori inferiori a quello dell'asintoto orizzontale $k$ e $c_2 = \frac{f(n_0)}{g(n_0)}$ perché per $n_0$ si otterrà il più grande valore di $\frac{f(n)}{g(n)}$, essendo la funzione non crescente.
 \end{description}
 \pagebreak
-\subsection{Esercizi svolti}
+\subsubsection{Esercizi svolti}
+\paragraph*{} Segue in questa sezione lo svolgimento completo di due esercizi eseguiti durante la lezione. 
+
+\begin{tcolorbox}[title=Ricorda che...]
+	La risoluzione di questo tipo di esercizi passa essenzialmente per tre punti:
+	\begin{enumerate}
+		\item verifica che il limite \textbf{tenda} ad una costante $k > 0$
+		\item individuazione dell'infinito intervallo aperto posto \textbf{più a destra}
+		\item analizzare la \textbf{crescenza} o \textbf{decrescenza} del rapporto.
+	\end{enumerate}
+\end{tcolorbox}
+
+
+\paragraph*{Esercizio} Dimostrare che $n^2+2n+1 = \Theta(n^2)$.
+\paragraph*{Svolgimento} Innanzitutto verifichiamo che il rapporto del limite tenda ad una costante strettamente positiva: $$\lim_{n\to \infty} \dfrac{n^2+2n+1}{n^2} = \lim_{n\to \infty} \left( \cancelto{1}{\dfrac{n^2}{n^2}} + \cancelto{0}{\dfrac{2n}{n^2}} + \cancelto{0}{\dfrac{1}{n^2}}\right) = 1$$\\\\Essendo il rapporto composto unicamente da membri positivi, l'intervallo aperto più a destra è $\mathbb{R}^{+}\setminus{\{0\}}$.\\\\Infine per valutarne la crescenza o la descrescenza, possiamo calcolare la derivata del rapporto:
+$$\dfrac{\partial \left(1+\dfrac{2}{n}+\dfrac{1}{n^2} \right)}{\partial n} = 0 - \dfrac{2}{n^2} - \dfrac{2}{n^3}$$
+a questo punto risulta lampante osservare che per $n > 0$ le due frazioni che compaiono come risultato della derivata sono negative, cioè: $-\dfrac{2}{n^2} -\dfrac{2}{n^3}<0,\,\forall n > 0$ e quindi il rapporto delle due funzioni ha un andamento decrescente.\\\\Per quanto detto nelle conclusioni del paragrafo precedente possiamo scegliere $c_1 = 1$, dal momento che la retta avente come equazione la costante $1$ è un asintoto per la $\dfrac{f(n)}{g(n)}$ assegnata e per $c_2$ fissiamo un $n_0$, ad esempio assegniamo valore $1$, e ricaviamo $c_2 = \dfrac{f(n_0)}{g(n_0)} = \dfrac{f(1)}{g(1)} = 4$.
+
 \end{document}
