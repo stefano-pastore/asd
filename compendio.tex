@@ -231,16 +231,36 @@ c_1 \cdot g(n) \leq f(n) \leq c_2\cdot g(n) \Rightarrow c_1 \leq \frac{f(n)}{g(n
 \begin{tcolorbox}[title=Ricorda che...]
 	La risoluzione di questo tipo di esercizi passa essenzialmente per tre punti:
 	\begin{enumerate}
-		\item verifica che il limite \textbf{tenda} ad una costante $k > 0$
-		\item individuazione dell'infinito intervallo aperto posto \textbf{più a destra}
+		\item verificare che il limite \textbf{tenda} ad una costante $k > 0$
+		\item individuarel'infinito intervallo aperto posto \textbf{più a destra} in cui il rapporto delle due funzioni è monotono
 		\item analizzare la \textbf{crescenza} o \textbf{decrescenza} del rapporto.
 	\end{enumerate}
 \end{tcolorbox}
 
 
 \paragraph*{Esercizio} Dimostrare che $n^2+2n+1 = \Theta(n^2)$.
-\paragraph*{Svolgimento} Innanzitutto verifichiamo che il rapporto del limite tenda ad una costante strettamente positiva: $$\lim_{n\to \infty} \dfrac{n^2+2n+1}{n^2} = \lim_{n\to \infty} \left( \cancelto{1}{\dfrac{n^2}{n^2}} + \cancelto{0}{\dfrac{2n}{n^2}} + \cancelto{0}{\dfrac{1}{n^2}}\right) = 1$$\\\\Essendo il rapporto composto unicamente da membri positivi, l'intervallo aperto più a destra è $\mathbb{R}^{+}\setminus{\{0\}}$.\\\\Infine per valutarne la crescenza o la descrescenza, possiamo calcolare la derivata del rapporto:
+\paragraph*{Svolgimento} Innanzitutto verifichiamo che il rapporto del limite tenda ad una costante strettamente positiva: $$\lim_{n\to \infty} \dfrac{n^2+2n+1}{n^2} = \lim_{n\to \infty} \left( \cancelto{1}{\dfrac{n^2}{n^2}} + \cancelto{0}{\dfrac{2n}{n^2}} + \cancelto{0}{\dfrac{1}{n^2}}\right) = 1$$\\\\Essendo il rapporto composto unicamente da membri positivi, l'intervallo aperto più a destra è $\mathbb{R}^{+}\setminus{\{0\}}$.\\\\Infine per valutarne la crescenza o la decrescenza, possiamo calcolare la derivata del rapporto:
 $$\dfrac{\partial \left(1+\dfrac{2}{n}+\dfrac{1}{n^2} \right)}{\partial n} = 0 - \dfrac{2}{n^2} - \dfrac{2}{n^3}$$
 a questo punto risulta lampante osservare che per $n > 0$ le due frazioni che compaiono come risultato della derivata sono negative, cioè: $-\dfrac{2}{n^2} -\dfrac{2}{n^3}<0,\,\forall n > 0$ e quindi il rapporto delle due funzioni ha un andamento decrescente.\\\\Per quanto detto nelle conclusioni del paragrafo precedente possiamo scegliere $c_1 = 1$, dal momento che la retta avente come equazione la costante $1$ è un asintoto per la $\dfrac{f(n)}{g(n)}$ assegnata e per $c_2$ fissiamo un $n_0$, ad esempio assegniamo valore $1$, e ricaviamo $c_2 = \dfrac{f(n_0)}{g(n_0)} = \dfrac{f(1)}{g(1)} = 4$.
 
+\begin{tcolorbox}[title=Attenzione]
+	Negli esercizi si adotterà come convenzione che $\log(n) = \log_2(n)$ e non $\log_{10}(n) o \ln(n)$.
+\end{tcolorbox}
+
+\pagebreak
+\paragraph*{Esercizio} Dimostrare che $3n\log(n) + \sqrt{n} =  \Theta(n\log(n))$
+\paragraph*{Svolgimento} Iniziamo col verificare che esiste un asintoto orizzontale per il rapporto delle due funzioni:
+$$\lim_{n \to \infty} \dfrac{3n\log(n)+ \sqrt{n}}{n\log(n)} = \lim_{n \to \infty} 3 + \cancelto{0}{\dfrac{1}{\sqrt{(n)}\log(n)}}=3$$
+ed osserviamo che $3 + \dfrac{1}{\sqrt{(n)}\log(n)}$ è certamente una quantità positiva per $n>1$.\\\\
+\begin{tcolorbox}[title=Alcune proprietà dei logaritmi]
+	Ricorda che:
+	\begin{itemize}
+		\item $\log_{a} x < 0 \Leftrightarrow 0 < x < 1$.
+		\item $\log_2(n) = \frac{\ln(n)}{\ln(2)}$
+	\end{itemize}
+\end{tcolorbox}
+Infine esaminiamo adesso la derivata del rapporto delle due funzioni:
+$$\dfrac{\partial \left(3 + \dfrac{1}{\sqrt{(n)}\log(n)} \right)}{\partial n} =-\frac{1}{2n\sqrt{n}}\cdot\frac{1}{\log(n)} - \frac{1}{\sqrt{n}} \cdot \frac{1}{n(\log(n))^2\log{e}} $$
+ed è evidente come la funzione è sempre negativa per qualsiasi $n > 1$, quindi il rapporto delle due funzioni ha una curva decrescente.
+Infine, scegliamo un $n_0 = 2$ perché sappiamo che $n > 1$ e in modo che sia facile gestire la base $2$ del logaritmo. La costante $c_1 = 3$ per le medesime considerazioni fatte per l'esercizio precedente e $c_2 = \frac{f(n_0)}{g(n_0)} = 3 + \frac{1}{\sqrt{2}}$.
 \end{document}
