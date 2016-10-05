@@ -16,6 +16,8 @@
 \usepackage{pgfplots}
 \usepackage{tcolorbox}
 \usepackage{subcaption}
+\usepackage{multicol}
+\usepackage{enumitem}
 \usepackage[makeroom]{cancel}
 \pgfplotsset{compat=1.12}
 \usetikzlibrary{positioning}
@@ -41,7 +43,7 @@
 \pagebreak
 
 \section*{Disclaimer e licenza}
-\paragraph*{} Questi appunti sono rilasciati sotto licenza \href{https://creativecommons.org/licenses/by-nc-sa/4.0/}{Creative Commons 4.0 by-nc-sa}. I sorgenti sono disponibili sul mio \href{http://bitbucket.org/}{repository} dedicato.
+\paragraph*{} Questi appunti sono rilasciati sotto licenza \href{https://creativecommons.org/licenses/by-nc-sa/4.0/}{Creative Commons 4.0 by-nc-sa}.
 \paragraph*{} Si fa presente che questo documento viene stilato senza pretese di assoluta correttezza né di esaustività. Qualora si siano rinvenuti degli errori, è possibile segnalarli all'indirizzo\linebreak \href{mailto:ste.pastore@studenti.unina.it}{ste.pastore@studenti.unina.it}. È consultabile il repository di tutto il materiale prodotto a disposizione di chiunque su \href{https://github.com/stefano-pastore/asd}{Github}.
 \pagebreak
 \section{Definizioni basilari}
@@ -79,8 +81,8 @@ Naturalmente l'algoritmo migliore sarà quello che per $n \to \infty$ detiene la
 \begin{tikzpicture}
 \begin{axis}[domain=0:5, samples=50,grid=major, legend style={legend cell align=left, font=\tiny},
 restrict y to domain=0:5,xlabel=$\text{Dimensione dell'input}$,ylabel=$\text{Tempo di esecuzione}$, legend pos=north west]
-\addplot [color=red]    {x};
-\addplot [color=green]  {e^x-5/2*x};
+\addplot [thick, color=red]    {x};
+\addplot [thick, color=green]  {e^x-5/2*x};
 
 \legend{$n$, $e^n-\frac{5}{2}n$}
 \draw [thick,dashed] (2,\pgfkeysvalueof{/pgfplots/ymin}) -- (2,\pgfkeysvalueof{/pgfplots/ymax});
@@ -224,6 +226,51 @@ c_1 \cdot g(n) \leq f(n) \leq c_2\cdot g(n) \Rightarrow c_1 \leq \frac{f(n)}{g(n
 	\item[il rapporto tende dal basso] posso prendere una qualsiasi costante $c_2 \geq k$, dal momento che il limite del rapporto non supera mai $k$ stesso e $c_1 = \frac{f(n_0)}{g(n_0)}$ perché per $n_0$ si otterrà il più piccolo valore di $\frac{f(n)}{g(n)}$, essendo la funzione non decrescente.
 	\item[il rapporto tende dall'alto] posso prendere un qualsiasi $c_1 \leq k$ poiché il rapporto non assume mai valori inferiori a quello dell'asintoto orizzontale $k$ e $c_2 = \frac{f(n_0)}{g(n_0)}$ perché per $n_0$ si otterrà il più grande valore di $\frac{f(n)}{g(n)}$, essendo la funzione non crescente.
 \end{description}
+\subsubsection{Proprietà generali della notazione asintotica}
+\paragraph*{} Altre proprietà addizionali da conoscere per la risoluzione degli esercizi. Siano $f$ e $g$ due funzioni.
+\begin{multicols}{3}
+	\begin{enumerate}[series=qa,label=(\textit{\alph*})]
+		\item $f(n) = \Theta(f(n))$
+		\item $f(n) = O(f(n))$
+		\item $f(n) = \Omega(f(n))$
+	\end{enumerate}
+\end{multicols}
+\begin{multicols}{2}
+	\begin{enumerate}[resume*=qa,label=(\textit{\alph*})]
+		\item $f(n) = \Theta(g(n)) \Leftrightarrow g(n) = \Theta(f(n))$
+		\item $f(n) = O(g(n)) \Leftrightarrow g(n) = \Omega(f(n))$ \label{itm:not1}
+	\end{enumerate}
+\end{multicols}
+	\begin{enumerate}[resume*=qa,label=(\textit{\alph*})]
+		\item $f(n) = \Theta(g(n)) \wedge g(n) = \Theta(h(n)) \Rightarrow f(n) = \Theta(h(n))$
+		\item $f(n) = O(g(n)) \wedge g(n) = O(h(n)) \Rightarrow f(n) = O(h(n))$ \label{itm:not2}
+		\item $f(n) = \Omega(g(n)) \wedge g(n) = \Omega(h(n)) \Rightarrow f(n) = \Omega(h(n))$
+	\end{enumerate}
+
+\paragraph*{} Dimostriamo le proprietà \ref{itm:not1} e \ref{itm:not2}.
+\paragraph*{} Siano $f$ e $g$ due funzioni, dimostriamo che $f(n) = O(g(n)) \Leftrightarrow g(n) = \Omega(f(n))$.
+\paragraph*{\fcolorbox{white}{black}{\color{white}Dimostrazione $\Rightarrow$}} Facendo riferimento alle rispettive definizioni di $\Omega(.)$ e $O(.)$ vogliamo provare che $$\exists n_0 > 0, \exists c_0 >0 : \forall n \geq n_0,\,f(n) \leq c_0\cdot g(n) \Rightarrow \exists n_1 > 0, \exists c_1 >0 : \forall n \geq n_1,\,c_1\cdot f(n) \leq g(n)$$
+\paragraph*{}Fissiamo $c_0 > 0$ e $n_0 > 0$ allora $\forall n \geq n_0,\,f(n)\leq c_0\cdot g(n)$ è vero per quanto assunto. Dividiamo ambo i membri della diseguaglianza per $c_0$, dal momento che è una costante non nulla e otteniamo: $$\frac{1}{c_0}f(n) \leq g(n)$$ notiamo che $c_0 > 0 \Rightarrow \frac{1}{c_0} > 0$ e quindi ponendo $n_0 = n_1$ e $\frac{1}{c_0} = c_1$, la proposizione risulta verificata.
+\paragraph*{\fcolorbox{white}{black}{\color{white}Dimostrazione $\Leftarrow$}} Invertendo le definizioni, analogamente si dimostra anche il senso contrario della proposizione.
+\paragraph*{} Siano $f$, $g$ ed $h$ tre funzioni, dimostriamo che vale la proprietà transitiva sulla definizione di $O(.)$ cioè $f(n) = O(g(n)) \wedge g(n) = O(h(n)) \Rightarrow f(n) = \Omega(h(n))$.
+\paragraph*{\fcolorbox{white}{black}{\color{white}Dimostrazione}} Ancora una volta trasformiamo la proposizione, sostituendo alle notazioni le loro rispettive definizioni si deve provare che:
+
+\[
+\begin{array}{l}
+\exists n_0 > 0,\, \exists c_0 > 0: \forall n \geq n_0,\,f(n) \leq c_0\cdot g(n) \\
+\exists n_1 > 0,\, \exists c_1 > 0: \forall n \geq n_1,\,g(n) \leq c_1\cdot h(n) 
+\end{array} \Rightarrow \exists n_2 > 0, \exists c_2 > 0 : \forall n \geq n_2,\,f(n) \leq c_2\cdot h(n)
+\]
+
+\paragraph*{}Per fare in modo che le due proposizioni dell'ipotesi siano contemporaneamente vere scegliamo $n_2 = \max\{n_0, n_1\}$ e riscriviamo quanto sopra:
+
+\[
+\begin{array}{l}
+\exists n_0 > 0,\, \exists c_0 > 0: \forall n \geq \bm{n_2},\,f(n) \leq c_0\cdot g(n) \\
+\exists n_1 > 0,\, \exists c_1 > 0: \forall n \geq \bm{n_2},\,g(n) \leq c_1\cdot h(n) 
+\end{array} \Rightarrow \exists n_2 > 0, \exists c_2 > 0 : \forall n \geq n_2,\,f(n) \leq c_2\cdot h(n)
+\]
+a questo punto dalla definizione abbiamo che $f(n) \leq c_0\cdot g(n)$ e $g(n) \leq c_1\cdot h(n)$ e moltiplicando ambo i membri della seconda diseguaglianza per $c_0$, che abbiamo definito strettamente positiva, otteniamo: $$c_0\cdot g(n) \leq c_0 \cdot c_1 \cdot h(n)$$ ma $f(n) \leq c_0\cdot g(n)$ e quindi ponendo $c_2 = c_0 \cdot c_1$ si giunge a $$f(n) \leq c_0\cdot g(n)\leq c_2 \cdot h(n) \Rightarrow f(n) \leq c_2\cdot h(n)$$ e l'implicazione è dimostrata.
 \pagebreak
 \subsubsection{Esercizi svolti}
 \paragraph*{} Segue in questa sezione lo svolgimento completo di due esercizi eseguiti durante la lezione. 
@@ -256,7 +303,9 @@ ed osserviamo che $3 + \dfrac{1}{\sqrt{(n)}\log(n)}$ è certamente una quantità
 	Ricorda che:
 	\begin{itemize}
 		\item $\log_{a} x < 0 \Leftrightarrow 0 < x < 1$.
-		\item $\log_2(n) = \frac{\ln(n)}{\ln(2)}$
+		\item $\log_2(n) = \dfrac{\ln(n)}{\ln(2)}$
+		\item $\log(a \cdot b) = \log(a) + \log(b)$
+		\item $\log\left(\dfrac{a}{b}\right) = \log(a) - \log(b)$
 	\end{itemize}
 \end{tcolorbox}
 Infine esaminiamo adesso la derivata del rapporto delle due funzioni:
