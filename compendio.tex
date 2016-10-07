@@ -33,7 +33,7 @@
 %opening
 \title{Raccolta di appunti per il corso di\\\Huge{Algoritmi e Strutture Dati}}
 \author{Stefano Pastore}
-\date{\tiny{aggiornato al \today}}
+\date{\tiny{aggiornato alla lezione del 30 settembre 2016}}
 
 \begin{document}
 
@@ -254,16 +254,13 @@ c_1 \cdot g(n) \leq f(n) \leq c_2\cdot g(n) \Rightarrow c_1 \leq \frac{f(n)}{g(n
 \paragraph*{\fcolorbox{white}{black}{\color{white}Dimostrazione $\Leftarrow$}} Invertendo le definizioni, analogamente si dimostra anche il senso contrario della proposizione.
 \paragraph*{} Siano $f$, $g$ ed $h$ tre funzioni, dimostriamo che vale la proprietà transitiva sulla definizione di $O(.)$ cioè $f(n) = O(g(n)) \wedge g(n) = O(h(n)) \Rightarrow f(n) = \Omega(h(n))$.
 \paragraph*{\fcolorbox{white}{black}{\color{white}Dimostrazione}} Ancora una volta trasformiamo la proposizione, sostituendo alle notazioni le loro rispettive definizioni si deve provare che:
-
 \[
 \begin{array}{l}
 \exists n_0 > 0,\, \exists c_0 > 0: \forall n \geq n_0,\,f(n) \leq c_0\cdot g(n) \\
 \exists n_1 > 0,\, \exists c_1 > 0: \forall n \geq n_1,\,g(n) \leq c_1\cdot h(n) 
 \end{array} \Rightarrow \exists n_2 > 0, \exists c_2 > 0 : \forall n \geq n_2,\,f(n) \leq c_2\cdot h(n)
 \]
-
 \paragraph*{}Per fare in modo che le due proposizioni dell'ipotesi siano contemporaneamente vere scegliamo $n_2 = \max\{n_0, n_1\}$ e riscriviamo quanto sopra:
-
 \[
 \begin{array}{l}
 \exists n_0 > 0,\, \exists c_0 > 0: \forall n \geq \bm{n_2},\,f(n) \leq c_0\cdot g(n) \\
@@ -276,6 +273,7 @@ a questo punto dalla definizione abbiamo che $f(n) \leq c_0\cdot g(n)$ e $g(n) \
 \paragraph*{} Segue in questa sezione lo svolgimento completo di due esercizi eseguiti durante la lezione. 
 
 \begin{tcolorbox}[title=Ricorda che...]
+	\label{tbox:solving}
 	La risoluzione di questo tipo di esercizi passa essenzialmente per tre punti:
 	\begin{enumerate}
 		\item verificare che il limite \textbf{tenda} ad una costante $k > 0$
@@ -300,6 +298,7 @@ a questo punto risulta lampante osservare che per $n > 0$ le due frazioni che co
 $$\lim_{n \to \infty} \dfrac{3n\log(n)+ \sqrt{n}}{n\log(n)} = \lim_{n \to \infty} 3 + \cancelto{0}{\dfrac{1}{\sqrt{(n)}\log(n)}}=3$$
 ed osserviamo che $3 + \dfrac{1}{\sqrt{(n)}\log(n)}$ è certamente una quantità positiva per $n>1$.\\\\
 \begin{tcolorbox}[title=Alcune proprietà dei logaritmi]
+	\label{tbox:logs}
 	Ricorda che:
 	\begin{itemize}
 		\item $\log_{a} x < 0 \Leftrightarrow 0 < x < 1$.
@@ -312,4 +311,12 @@ Infine esaminiamo adesso la derivata del rapporto delle due funzioni:
 $$\dfrac{\partial \left(3 + \dfrac{1}{\sqrt{(n)}\log(n)} \right)}{\partial n} =-\frac{1}{2n\sqrt{n}}\cdot\frac{1}{\log(n)} - \frac{1}{\sqrt{n}} \cdot \frac{1}{n(\log(n))^2\log{e}} $$
 ed è evidente come la funzione è sempre negativa per qualsiasi $n > 1$, quindi il rapporto delle due funzioni ha una curva decrescente.
 Infine, scegliamo un $n_0 = 2$ perché sappiamo che $n > 1$ e in modo che sia facile gestire la base $2$ del logaritmo. La costante $c_1 = 3$ per le medesime considerazioni fatte per l'esercizio precedente e $c_2 = \frac{f(n_0)}{g(n_0)} = 3 + \frac{1}{\sqrt{2}}$.
+\paragraph*{Esercizio} Dimostrare che $f(n) = \Theta(g(n)) \Rightarrow \log(f(n)) = \Theta(g(n))$.
+\paragraph*{Svolgimento} Dalla definizione di $\Theta(.)$ sappiamo che $$\exists n_0 > 0,\,\exists c_0,c_1 > 0,\,:\forall n \geq n_0,\,c_0 \cdot g(n) \leq f(n) \leq c_1 \cdot g(n)$$, quindi affinché quanto implicato nella proposizione sia vero, deve in particolare accadere che $\log(c_0 \cdot g(n)) \leq f(n) \leq \log(c_1 \cdot g(n))$. Per le proprietà dei logaritmi, riassunte nello specchietto \ref{tbox:logs}, possiamo riscrivere la relazione come $\log(c_0) +\log (g(n)) \leq f(n) \leq \log(c_1) + \log(g(n))$.
+\begin{tcolorbox}[title=Ulteriori osservazioni]
+	L'ultima relazione cui si è arrivati, posta in quella forma, non è sufficiente a provare quanto dobbiamo. Pertanto si rende necessario ricorrere ad un'ulteriore dimostrazione: data una costante arbitraria $k_1$, provare che $k_1+z(n)=\Theta(z(n))$.
+	Ed infatti, assumendo $z(n)$ asintoticamente crescente, otteniamo:
+	$$\lim_{n\to \infty} \frac{z(n)+k_1}{z(n)} = \lim_{n\to \infty} 1+ \cancelto{0}{\frac{k_1}{z(n)}} = 1$$ e quindi, ricordando quanto scritto in \ref{tbox:solving}, possiamo affermare che $$\exists p_1 > 0,p_2>0,\exists n_1 > 0,\,:\forall n \geq n_1$$ e risulta che $$p_1\cdot z(n) \leq k_1+z(n) \leq p_2 \cdot z(n)$$ ed in particolare possiamo porre $z(n) = \log(n)$ dato che $z(n)$ l'abbiamo supposta come asintoticamente crescente.
+\end{tcolorbox}
+Per quanto osservato, grazie alla transitività, ponendo a sinistra $k = \log(c_0)$ e a destra $k = \log(c_1)$, sappiamo che $\exists p_1 > 0,p_2>0$ per i quali $p_1\cdot \log(g(n)) \leq \log(f(n)) \leq p_2 \cdot \log(g(n))$ e l'implicazione risulta adesso verificata.
 \end{document}
