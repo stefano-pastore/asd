@@ -76,17 +76,20 @@ Naturalmente l'algoritmo migliore sarà quello che per $n \to \infty$ detiene la
 \paragraph{\fcolorbox{white}{black}{\color{white}Limite asintotico superiore}} Siano $f(n)$ e $g(n)$ due funzioni. Si dice che $g(n)$ è \textbf{limite asintotico superiore} per $f(n)$ e si scrive $\bm{f(n) = O(g(n))}$ se è possibile riuscire a trovare una costante $c$ positiva tale per cui, per ogni valore $n$ maggiore di un certo $n_0$ positivo fissato, risulta che $f(n) \leq  c\cdot g(n)$ o formalmente: $$\exists c>0, \exists n_0 > 0 : \forall n \geq n_0,\,f(n) \leq c\cdot g(n)$$
 \subparagraph*{Un esempio} Supponiamo di avere due funzioni. Sia $f(n) = n$ e $g(n) = e^n-\frac{5}{2}n$ e per avere un'idea immediata, visualizziamone l'andamento.
 
+% adding_dotted
 \begin{figure}[hb]
 \centering
-\begin{tikzpicture}
+\begin{tikzpicture} [label/.style={%
+	postaction={ decorate,transform shape,
+	decoration={ markings, mark=at position .2 with \node #1;}}}]
 \begin{axis}[domain=0:5, samples=50,grid=major, legend style={legend cell align=left, font=\tiny},
 restrict y to domain=0:5,xlabel=$\text{Dimensione dell'input}$,ylabel=$\text{Tempo di esecuzione}$, legend pos=north west]
 \addplot [thick, color=red]    {x};
 \addplot [thick, color=green]  {e^x-5/2*x};
 
 \legend{$n$, $e^n-\frac{5}{2}n$}
-\draw [thick,dashed] (2,\pgfkeysvalueof{/pgfplots/ymin}) -- (2,\pgfkeysvalueof{/pgfplots/ymax});
-% \draw [very thick,dotted] (\pgfkeysvalueof{/pgfplots/xmin},e^2-5/2*2) -- (\pgfkeysvalueof{/pgfplots/xmax},e^2-5/2*2);
+% \draw [thick,dashed] (2,\pgfkeysvalueof{/pgfplots/ymin}) -- (2,\pgfkeysvalueof{/pgfplots/ymax});
+\draw [thick,dashed,label={[below]{$n_0$}}] (2,\pgfkeysvalueof{/pgfplots/ymin}) -- (2,\pgfkeysvalueof{/pgfplots/ymax});
 \end{axis}
 \end{tikzpicture}
 \caption{In figura $f(n) = n$ e $g(n) = e^n-\frac{5}{2}n$.}
@@ -105,15 +108,17 @@ restrict y to domain=0:5,xlabel=$\text{Dimensione dell'input}$,ylabel=$\text{Tem
 
 \begin{figure}[hb]
 	\centering
-	\begin{tikzpicture}
+	\begin{tikzpicture} [label/.style={%
+		postaction={ decorate,transform shape,
+		decoration={ markings, mark=at position .1 with \node #1;}}}]
 	\begin{axis}[domain=0:25, samples=150,grid=major, legend style={legend cell align=left, font=\tiny},
 	restrict y to domain=0:25,xlabel=$\text{Dimensione dell'input}$,ylabel=$\text{Tempo di esecuzione}$, legend pos=south east]
 	\addplot [thick,color=red]    {x^2};
 	\addplot [thick,color=green]  {x^3-1/3*x};
 	
 	\legend{$n^2$, $n^3-\frac{1}{3}n$}
-	\draw [thick,dashed] (2,\pgfkeysvalueof{/pgfplots/ymin}) -- (2,\pgfkeysvalueof{/pgfplots/ymax});
-	% \draw [very thick,dotted] (\pgfkeysvalueof{/pgfplots/xmin},e^2-5/2*2) -- (\pgfkeysvalueof{/pgfplots/xmax},e^2-5/2*2);
+	% \draw [thick,dashed] (2,\pgfkeysvalueof{/pgfplots/ymin}) -- (2,\pgfkeysvalueof{/pgfplots/ymax});
+	\draw [thick,dashed,label={[below]{$n_0$}}] (2,\pgfkeysvalueof{/pgfplots/ymin}) -- (2,\pgfkeysvalueof{/pgfplots/ymax});
 	\end{axis}
 	\end{tikzpicture}
 	\caption{In figura $f(n) = n^3-\frac{1}{3}n$ e $g(n) = n^2$.}
@@ -126,7 +131,9 @@ restrict y to domain=0:5,xlabel=$\text{Dimensione dell'input}$,ylabel=$\text{Tem
 \subparagraph*{Un esempio} Supponiamo di avere due funzioni. Sia $f(n) = 2n^2-\frac{1}{3}n$ e $g(n) = n^2+2n$. Per avere subito un'idea di come queste due funzioni si comportano, visualizziamone l'andamento.
 \begin{figure}[hb]
 	\centering
-	\begin{tikzpicture}
+	\begin{tikzpicture} [label/.style={%
+		postaction={ decorate,transform shape,
+		decoration={ markings, mark=at position .1 with \node #1;}}}]
 	\begin{axis}[domain=0:50, samples=500,grid=major, legend style={legend cell align=left, font=\tiny},
 	restrict y to domain=0:150,xlabel=$\text{Dimensione dell'input}$,ylabel=$\text{Tempo di esecuzione}$, legend pos=south east]
 	\addplot [thick,color=red]    {x^2+2*x};
@@ -134,8 +141,7 @@ restrict y to domain=0:5,xlabel=$\text{Dimensione dell'input}$,ylabel=$\text{Tem
 	\addplot [thick,color=red]    {4*(x^2+2*x)};
 	
 	\legend{$n^2+2n$, $2n^2-\frac{1}{3}n$, $4n^2-8n$}
-	\draw [thick,dashed] (3,\pgfkeysvalueof{/pgfplots/ymin}) -- (3,\pgfkeysvalueof{/pgfplots/ymax});
-	% \draw [very thick,dotted] (\pgfkeysvalueof{/pgfplots/xmin},e^2-5/2*2) -- (\pgfkeysvalueof{/pgfplots/xmax},e^2-5/2*2);
+	\draw [thick,dashed,label={[below]{$n_0$}}] (3,\pgfkeysvalueof{/pgfplots/ymin}) -- (3,\pgfkeysvalueof{/pgfplots/ymax});
 	\end{axis}
 	\end{tikzpicture}
 	\caption{In figura $f(n) = 2n^2-\frac{1}{3}n$ e $g(n) = n^2+2n$.}
@@ -270,14 +276,14 @@ c_1 \cdot g(n) \leq f(n) \leq c_2\cdot g(n) \Rightarrow c_1 \leq \frac{f(n)}{g(n
 a questo punto dalla definizione abbiamo che $f(n) \leq c_0\cdot g(n)$ e $g(n) \leq c_1\cdot h(n)$ e moltiplicando ambo i membri della seconda diseguaglianza per $c_0$, che abbiamo definito strettamente positiva, otteniamo: $$c_0\cdot g(n) \leq c_0 \cdot c_1 \cdot h(n)$$ ma $f(n) \leq c_0\cdot g(n)$ e quindi ponendo $c_2 = c_0 \cdot c_1$ si giunge a $$f(n) \leq c_0\cdot g(n)\leq c_2 \cdot h(n) \Rightarrow f(n) \leq c_2\cdot h(n)$$ e l'implicazione è dimostrata.
 \pagebreak
 \subsubsection{Esercizi svolti}
-\paragraph*{} Segue in questa sezione lo svolgimento completo di due esercizi eseguiti durante la lezione. 
+\paragraph*{} Segue in questa sezione lo svolgimento completo di due esercizi eseguiti durante la lezione.\\
 
 \begin{tcolorbox}[title=Ricorda che...]
 	\label{tbox:solving}
 	La risoluzione di questo tipo di esercizi passa essenzialmente per tre punti:
 	\begin{enumerate}
 		\item verificare che il limite \textbf{tenda} ad una costante $k > 0$
-		\item individuarel'infinito intervallo aperto posto \textbf{più a destra} in cui il rapporto delle due funzioni è monotono
+		\item individuare l'infinito intervallo aperto posto \textbf{più a destra} in cui il rapporto delle due funzioni è monotono
 		\item analizzare la \textbf{crescenza} o \textbf{decrescenza} del rapporto.
 	\end{enumerate}
 \end{tcolorbox}
@@ -286,7 +292,7 @@ a questo punto dalla definizione abbiamo che $f(n) \leq c_0\cdot g(n)$ e $g(n) \
 \paragraph*{Esercizio} Dimostrare che $n^2+2n+1 = \Theta(n^2)$.
 \paragraph*{Svolgimento} Innanzitutto verifichiamo che il rapporto del limite tenda ad una costante strettamente positiva: $$\lim_{n\to \infty} \dfrac{n^2+2n+1}{n^2} = \lim_{n\to \infty} \left( \cancelto{1}{\dfrac{n^2}{n^2}} + \cancelto{0}{\dfrac{2n}{n^2}} + \cancelto{0}{\dfrac{1}{n^2}}\right) = 1$$\\\\Essendo il rapporto composto unicamente da membri positivi, l'intervallo aperto più a destra è $\mathbb{R}^{+}\setminus{\{0\}}$.\\\\Infine per valutarne la crescenza o la decrescenza, possiamo calcolare la derivata del rapporto:
 $$\dfrac{\partial \left(1+\dfrac{2}{n}+\dfrac{1}{n^2} \right)}{\partial n} = 0 - \dfrac{2}{n^2} - \dfrac{2}{n^3}$$
-a questo punto risulta lampante osservare che per $n > 0$ le due frazioni che compaiono come risultato della derivata sono negative, cioè: $-\dfrac{2}{n^2} -\dfrac{2}{n^3}<0,\,\forall n > 0$ e quindi il rapporto delle due funzioni ha un andamento decrescente.\\\\Per quanto detto nelle conclusioni del paragrafo precedente possiamo scegliere $c_1 = 1$, dal momento che la retta avente come equazione la costante $1$ è un asintoto per la $\dfrac{f(n)}{g(n)}$ assegnata e per $c_2$ fissiamo un $n_0$, ad esempio assegniamo valore $1$, e ricaviamo $c_2 = \dfrac{f(n_0)}{g(n_0)} = \dfrac{f(1)}{g(1)} = 4$.
+a questo punto risulta lampante osservare che per $n > 0$ le due frazioni che compaiono come risultato della derivata sono negative, cioè: $-\dfrac{2}{n^2} -\dfrac{2}{n^3}<0,\,\forall n > 0$ e quindi il rapporto delle due funzioni ha un andamento decrescente.\\\\Per quanto detto nelle conclusioni del paragrafo precedente possiamo scegliere $c_1 = 1$, dal momento che la retta avente come equazione la costante $1$ è un asintoto per la $\dfrac{f(n)}{g(n)}$ assegnata e per $c_2$ fissiamo un $n_0$, ad esempio assegniamo valore $1$, e ricaviamo $c_2 = \dfrac{f(n_0)}{g(n_0)} = \dfrac{f(1)}{g(1)} = 4$.\\
 
 \begin{tcolorbox}[title=Attenzione]
 	Negli esercizi si adotterà come convenzione che $\log(n) = \log_2(n)$ e non $\log_{10}(n) o \ln(n)$.
@@ -312,11 +318,18 @@ $$\dfrac{\partial \left(3 + \dfrac{1}{\sqrt{(n)}\log(n)} \right)}{\partial n} =-
 ed è evidente come la funzione è sempre negativa per qualsiasi $n > 1$, quindi il rapporto delle due funzioni ha una curva decrescente.
 Infine, scegliamo un $n_0 = 2$ perché sappiamo che $n > 1$ e in modo che sia facile gestire la base $2$ del logaritmo. La costante $c_1 = 3$ per le medesime considerazioni fatte per l'esercizio precedente e $c_2 = \frac{f(n_0)}{g(n_0)} = 3 + \frac{1}{\sqrt{2}}$.
 \paragraph*{Esercizio} Dimostrare che $f(n) = \Theta(g(n)) \Rightarrow \log(f(n)) = \Theta(g(n))$.
-\paragraph*{Svolgimento} Dalla definizione di $\Theta(.)$ sappiamo che $$\exists n_0 > 0,\,\exists c_0,c_1 > 0,\,:\forall n \geq n_0,\,c_0 \cdot g(n) \leq f(n) \leq c_1 \cdot g(n)$$, quindi affinché quanto implicato nella proposizione sia vero, deve in particolare accadere che $\log(c_0 \cdot g(n)) \leq f(n) \leq \log(c_1 \cdot g(n))$. Per le proprietà dei logaritmi, riassunte nello specchietto \ref{tbox:logs}, possiamo riscrivere la relazione come $\log(c_0) +\log (g(n)) \leq f(n) \leq \log(c_1) + \log(g(n))$.
+\paragraph*{Svolgimento} Dalla definizione di $\Theta(.)$ sappiamo che $$\exists n_0 > 0,\,\exists c_0,c_1 > 0,\,:\forall n \geq n_0,\,c_0 \cdot g(n) \leq f(n) \leq c_1 \cdot g(n)$$, quindi affinché quanto implicato nella proposizione sia vero, deve in particolare accadere che $\log(c_0 \cdot g(n)) \leq f(n) \leq \log(c_1 \cdot g(n))$. Per le proprietà dei logaritmi, riassunte nello specchietto \ref{tbox:logs}, possiamo riscrivere la relazione come $\log(c_0) +\log (g(n)) \leq f(n) \leq \log(c_1) + \log(g(n))$.\\
 \begin{tcolorbox}[title=Ulteriori osservazioni]
 	L'ultima relazione cui si è arrivati, posta in quella forma, non è sufficiente a provare quanto dobbiamo. Pertanto si rende necessario ricorrere ad un'ulteriore dimostrazione: data una costante arbitraria $k_1$, provare che $k_1+z(n)=\Theta(z(n))$.
 	Ed infatti, assumendo $z(n)$ asintoticamente crescente, otteniamo:
-	$$\lim_{n\to \infty} \frac{z(n)+k_1}{z(n)} = \lim_{n\to \infty} 1+ \cancelto{0}{\frac{k_1}{z(n)}} = 1$$ e quindi, ricordando quanto scritto in \ref{tbox:solving}, possiamo affermare che $$\exists p_1 > 0,p_2>0,\exists n_1 > 0,\,:\forall n \geq n_1$$ e risulta che $$p_1\cdot z(n) \leq k_1+z(n) \leq p_2 \cdot z(n)$$ ed in particolare possiamo porre $z(n) = \log(n)$ dato che $z(n)$ l'abbiamo supposta come asintoticamente crescente.
+	$$\lim_{n\to \infty} \frac{z(n)+k_1}{z(n)} = \lim_{n\to \infty} 1+ \cancelto{0}{\frac{k_1}{z(n)}} = 1$$ e quindi, ricordando quanto scritto in \ref{tbox:solving}, possiamo affermare che $$\exists p_1 > 0,p_2>0,\exists n_1 > 0\,:\forall n \geq n_1$$ e risulta che $$p_1\cdot z(n) \leq k_1+z(n) \leq p_2 \cdot z(n)$$ ed in particolare possiamo porre $z(n) = \log(n)$ dato che $z(n)$ l'abbiamo supposta come asintoticamente crescente.
 \end{tcolorbox}
 Per quanto osservato, grazie alla transitività, ponendo a sinistra $k = \log(c_0)$ e a destra $k = \log(c_1)$, sappiamo che $\exists p_1 > 0,p_2>0$ per i quali $p_1\cdot \log(g(n)) \leq \log(f(n)) \leq p_2 \cdot \log(g(n))$ e l'implicazione risulta adesso verificata.
+\paragraph*{Esercizio} Dimostrare che $f(n) = \Theta(g(n)) \Rightarrow 2^{f(n)} = \Theta(2^{g(n)})$.
+\paragraph*{Svolgimento} Per la definizione di $\Theta(.)$ che conosciamo, allora bisogna riuscire a dimostrare che $$\exists c_0 > 0,\,\exists c_1 > 0,\,\exists n_0 > 0:\forall n \geq n_0,\,c_0 \cdot g(n) \leq f(n) \leq c_1 \cdot g(n)$$ osserviamo che la funzione esponenziale è monotona, quindi per il problema in questione dobbiamo provare che $2^{c_0 \cdot g(n)} \leq 2^{f(n)} \leq 2^{c_1 \cdot g(n)}$ o, riscrivendo facendo uso delle proprietà degli esponenziali, equivalentemente $$\left(2^{g(n)}\right)^{c_0} \leq 2^{f(n)} \leq \left(2^{g(n)}\right)^{c_1}$$
+a questo punto per riuscire a dimostrare con successo l'implicazione della proposizione, definita $z(n)$ come una qualsivoglia funzione crescente, dovremmo verificare che valga \linebreak $(z(n))^c = \Theta(z(n))\,\forall c > 0$ in modo da poterci infine ricondurre alla definizione di $\Theta(.)$ in maniera analoga a quanto esibito nello svolgimento dell'esercizio precedente.\\
+\begin{tcolorbox}[title=Osservazione]
+Si può osservare però che $(z(n))^c = \Theta(z(n))$ è valida solamente quando $c = 1$. Infatti sia $c > 1$ allora: $$\lim_{n \to \infty} \frac{(z(n))^c}{(z(n))} = \lim_{n \to \infty} (z(n))^{c-1} = \infty \neq k$$ e questo deve indurre a pensare che la proposizione sia \textbf{falsa} e dobbiamo produrre un controesempio.
+\end{tcolorbox}
+\subparagraph*{\fcolorbox{white}{gray}{\color{white}Controesempio}} Sulla base di quanto appena concluso, scelte opportunamente $f(n) = n$ e $g(n) = 2n$ per le quali è chiaro che sussista $f(n) = \Theta(g(n))$, ci chiediamo se basta questo a concludere che $2^n = \Theta(2^{2n})$. Facendo il limite, otteniamo che: $$\lim_{n \to \infty} \frac{2^{2n}}{2^n} = \lim_{n \to \infty} \frac{(2^n)^{\cancel{2}}}{\cancel{2^n}} = \lim_{n \to \infty} 2^n = \infty$$ quindi terminiamo la dimostrazione dichiarando falsa la proposizione.
 \end{document}
