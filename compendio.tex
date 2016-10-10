@@ -56,7 +56,7 @@
 	extendedchars=true,
 	keepspaces=true,
 	keywordstyle=\color{blue},
-	otherkeywords={\&\&,\|\|,\!, FOR,IF,RETURN,TO,THEN,ELSE,WHILE,DO},
+	keywords={AND,OR,NOT,FOR,IF,RETURN,TO,THEN,ELSE,WHILE,DO},
 	numbers=left,
 	numbersep=5pt,
 	numberstyle=\tiny\color{g1},
@@ -504,7 +504,7 @@ InsertionSort(A[])
 	FOR j = 2 TO length(A)
 		key = A[j]
 		i = j - 1
-		WHILE (i > 0) && (a[i] > key) DO
+		WHILE (i > 0) AND (a[i] > key) DO
 			A[i+1] = A[i]
 			i = i - 1
 		A[i+1] = key
