@@ -11,6 +11,7 @@
 \usepackage{centernot}
 \usepackage{mathtools}
 \usepackage{bm}
+\usepackage[table]{xcolor}
 \usepackage{color}
 \usepackage{hyperref}
 \usepackage{pgfplots}
@@ -22,6 +23,7 @@
 \pgfplotsset{compat=1.12}
 \usetikzlibrary{positioning}
 \usetikzlibrary{decorations.markings}
+\usetikzlibrary{shapes.multipart, calc}
 \usepackage[font={footnotesize,it},width=.5\textwidth]{caption}
 
 \hypersetup{%
@@ -30,12 +32,52 @@
 	urlcolor=cyan
 }
 
+% CUSTOMIZATIONS
+\definecolor{t1}{HTML}{C32024}
+\definecolor{t2}{HTML}{141543}
+\definecolor{t3}{HTML}{1052A6}
+\definecolor{t4}{HTML}{06B0E6}
+
+\definecolor{g1}{HTML}{CFCFCF}
+\definecolor{g2}{HTML}{ADADAD}
+
+\renewcommand\arraystretch{1.3} \setlength\minrowclearance{1.2pt}
+
+\lstset{ %
+	backgroundcolor=\color{white},
+	basicstyle=\footnotesize\ttfamily,
+	breakatwhitespace=false,
+	breaklines=true,
+	captionpos=b,
+	commentstyle=\color{mygreen},
+	deletekeywords={...},
+	escapeinside={\%*}{*)},
+	extendedchars=true,
+	keepspaces=true,
+	keywordstyle=\color{blue},
+	language=C,
+	otherkeywords={AND,OR,NOT,FOR,IF,RETURN,TO,THEN,ELSE,WHILE,DO},
+	numbers=left,
+	numbersep=5pt,
+	numberstyle=\tiny\color{g1},
+	rulecolor=\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	showtabs=false,
+	stepnumber=1,
+	stringstyle=\color{mymauve},
+	tabsize=2,
+	title=\lstname
+}
+
+
 %opening
 \title{Raccolta di appunti per il corso di\\\Huge{Algoritmi e Strutture Dati}}
 \author{Stefano Pastore}
 \date{\tiny{aggiornato alla lezione del 30 settembre 2016}}
 
 \begin{document}
+ \rowcolors{2}{gray!25}{white}
 
 \maketitle
 \pagebreak
@@ -332,4 +374,127 @@ a questo punto per riuscire a dimostrare con successo l'implicazione della propo
 Si può osservare però che $(z(n))^c = \Theta(z(n))$ è valida solamente quando $c = 1$. Infatti sia $c > 1$ allora: $$\lim_{n \to \infty} \frac{(z(n))^c}{(z(n))} = \lim_{n \to \infty} (z(n))^{c-1} = \infty \neq k$$ e questo deve indurre a pensare che la proposizione sia \textbf{falsa} e dobbiamo produrre un controesempio.
 \end{tcolorbox}
 \subparagraph*{\fcolorbox{white}{gray}{\color{white}Controesempio}} Sulla base di quanto appena concluso, scelte opportunamente $f(n) = n$ e $g(n) = 2n$ per le quali è chiaro che sussista $f(n) = \Theta(g(n))$, ci chiediamo se basta questo a concludere che $2^n = \Theta(2^{2n})$. Facendo il limite, otteniamo che: $$\lim_{n \to \infty} \frac{2^{2n}}{2^n} = \lim_{n \to \infty} \frac{(2^n)^{\cancel{2}}}{\cancel{2^n}} = \lim_{n \to \infty} 2^n = \infty$$ quindi terminiamo la dimostrazione dichiarando falsa la proposizione.
+\section{Valutare la complessità di un algoritmo}
+\subsection{Il problema della massima somma di una sotto-sequenza}
+\paragraph*{} Uno dei problemi notevoli che ci si appresta ad analizzare è quello del calcoli della massima somma all'interno di una arbitraria sotto-sequenza di numeri. In particolare questo algoritmo riceve in input la sequenza $A$ ed un intero $N > 1$, che ne rappresenta la lunghezza; in output restituisce un intero $S = \sum_{k = i}^{j} a_k$ dove $1 \leq i \leq j \leq N$ ed $S$ è il più grande possibile.
+
+\subsubsection{Versione \#1}
+\paragraph*{} Un approccio del tutto ingenuo al problema consiste nel generare tutte le possibili coppie di posizioni $(i, j)$ con $i \leq j$, valutare per ognuna di esse la somma, conservarne il valore se è più grande di quello trovato in precedenza.
+
+\begin{lstlisting}[caption={Calcolo della massima somma di una sotto-sequenza, versione 1.},label={lst:max_seq_1}]
+int MaxSeqSum(int N, A[])
+	maxsum = 0
+	FOR i = 1 TO N 
+		FOR j = i TO N
+			sum = 0
+			FOR k = i TO j
+				sum = sum + A[k]
+				maxsum = max(maxsum, max)
+	RETURN maxsum
+\end{lstlisting}
+Analizziamo adesso riga per riga la complessità dell'algoritmo.
+\begin{table}[h]
+	\centering
+	\begin{tabular}{ c | c | c }
+		\textbf{Linea} & \textbf{Num. op. elementari} & \textbf{Contributi} \\ \hline
+		2 & $1$ & $1$ \\
+		3 & $2$ & $N+1$ \\
+		4 & $4$ & $\sum_{i = 1}^{N}(N-i+2)$ \\ 
+		5 & $2$ & $\sum_{i = 1}^{N}(N-i+1)$ \\
+		6 & $2$ & $\sum_{i=1}^{N}{\sum_{j=i}^{N} (j-i+2)}$ \\
+		7 & $3$ & $\sum_{i=1}^{N}{\sum_{j=i}^{N} (j-i+1)}$ \\
+		8 & $5$ & $\sum_{i=1}^{N}{\sum_{j=i}^{N} (j-i+1)}$ \\
+		9 & $1$ & $1$ \\ 
+	\end{tabular}
+	\caption{Calcolo dei contributi per l'algoritmo mostrato nel listing \ref{lst:max_seq_1}.}
+	\label{tbl:max_seq_1}
+\end{table}
+Dando una rapida occhiata alla complessità delle righe 7-8 mostrate in tabella \ref{tbl:max_seq_1}, che sono quelle più innestate all'interno dei cicli, nello sviluppare la sommatoria interna, ci accorgiamo del fatto che:
+$$\sum_{j = i}^{N}(j-i+1) = \sum_{j = 1}^{N-i+1} j = \dfrac{(N-i+1)(N-i+2)}{2}$$ e pertanto
+$$\sum_{i = 1}^{N} \dfrac{(N-i+1)(N-i+2)}{2} = O(n^3)\text{.}$$
+\paragraph*{}Il cercare di risolvere il problema attraverso un approccio naïf e totalmente inclusivo di tutte le possibili sotto-sequenze, lo si paga con una complessità cubica.
+
+\subsubsection{Versione \#2}
+\paragraph*{}Ragionando sull'algoritmo possiamo introdurre un'ottimizzazione: si potrebbe evitare di ricalcolare da zero la somma di una sotto-sequenza $(i, j+1)$ quando l'algoritmo ha appena computato $(i, j)$.
+
+\begin{lstlisting}[caption={Calcolo della massima somma di una sotto-sequenza, versione 2.},label={lst:max_seq_2}]
+int MaxSeqSum(int N, A[])
+	maxsum = 0
+	FOR i = 1 TO N 
+		sum = 0
+		FOR j = i TO N
+			sum = sum + A[j]
+			maxsum = max(maxsum, max)
+RETURN maxsum
+\end{lstlisting}
+
+\paragraph*{}Senza scendere nel dettaglio della complessità, possiamo notare come quei due cicli \texttt{FOR} innestati facciano sì che la funzione $T(n)$ associata a questo algoritmo sia $O(n^2)$.
+
+\subsubsection{Versione \#3} Dal momento che non è possibile più introdurre significative ottimizzazioni sintattiche che snelliscano ulteriormente la ricerca limitandone la complessità, è necessario condurre un genere di ragionamento diverso, che consenta all'algoritmo di riconoscere ed evitare di computare a priori sotto-sequenze che certamente non possono restituire un valore che sia la massima somma. Proviamo a considerare la sotto-sequenza $(a_p, a_{r+k})$ qui di seguito schematizzata: 
+\begin{figure}[hb]
+	\centering
+\begin{tikzpicture}[array/.style={rectangle split,rectangle split horizontal, rectangle split parts=#1,draw, anchor=center, fill=white}]
+\node[array=14] (a) {
+	\nodepart{one}
+	\nodepart{two}$\cdots$
+	\nodepart{three}$a_p$
+	\nodepart{four}
+	\nodepart{five}
+	\nodepart{six}$a_{r-1}$
+	\nodepart{seven}$a_r$
+	\nodepart{eight}$a_{r+1}$
+	\nodepart{nine}
+	\nodepart{ten}
+	\nodepart{eleven}
+	\nodepart{twelve}$a_{r+k}$
+	\nodepart{thirteen}
+	\nodepart{fourteen}$\cdots$
+};
+\end{tikzpicture}
+	\label{fig:arrmaxsum}
+	\caption{Schematizzazione di una qualsiasi sotto-sequenza.}
+\end{figure}
+
+matematicamente valgono le due seguenti:
+\begin{enumerate}
+	\item $a_p + \cdots + a_r \geq 0 \Rightarrow a_p + \cdots + a_{r+k} \geq a_{r+1} + \cdots + a_{r+k},\,\forall k \geq 1$ 
+	\item $a_p + \cdots + a_{r-1} > 0 \wedge a_p + \cdots + a_r < 0 \Rightarrow a_p + \cdots + a_{r+k} \leq a_{r+1} + \cdots + a_{r+k},\, \forall k \geq 1\text{.}$
+\end{enumerate}
+In soldoni le due proprietà enunciano che, finché la somma di tutti gli elementi che vanno da $a_p$ ad $a_r$ è positiva, allora effettivamente la somma che va da $a_p$ ad $a_{r+k}$ è maggiore della somma da $a_p$ ad $a_r$. Viceversa se l'elemento $r$-esimo rende il contributo della sotto-sequenza $a_p$ ad $a_r$ negativo, allora la somma da $a_{r+1}$ ad $a_{r+k}$ è certamente maggiore della somma da $a_p$ ad $a_r$.\\\\Quindi, sulla base di queste affermazioni, è possibile scrivere una nuova versione dell'algoritmo, presupponendo che alla fine sia interessante conoscere anche quale è l'effettiva sotto-sequenza che genera la massima somma:
+
+\begin{lstlisting}[caption={Calcolo della massima somma di una sotto-sequenza, versione 3.},label={lst:max_seq_3}]
+int MaxSeqSum(int N, A[])
+	maxsum = 0
+	sum = 0
+	i = 1
+	FOR j = i TO N
+		IF (sum + A[j] > 0) THEN
+			sum = sum + A[j]
+		ELSE
+			sum = 0
+			i = j+1
+		IF (maxsum < sum) THEN
+			maxsum = sum
+			max_start = i
+			max_end = j
+\end{lstlisting}
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{ c | c | c }
+		\textbf{Linee} & \textbf{Num. op. elementari} & \textbf{Contributi} \\ \hline
+		2 & $1$ & $1$ \\
+		3 & $2$ & $1$ \\
+		4 & $1$ & $1$ \\ 
+		5 & $3$ & $N+1$ \\
+		6-10 & $2$ & $N$ \\
+		11-14 & $3$ & tra $1$ e $N$ \\
+	\end{tabular}
+	\caption{Calcolo dei contributi per l'algoritmo mostrato nel listing \ref{lst:max_seq_3}.}
+	\label{tbl:max_seq_3}
+\end{table}
+
+I rami della struttura \texttt{IF-ELSE} delle linee 6-10 sono eseguite in tutto $N$ volte, in quanto l'algoritmo, ad ogni iterazione effettuata, o prenderà un blocco o un altro. L'ultimo \texttt{IF} dell'algoritmo invece è impredicibile a priori, ma certamente sarà eseguito almeno $1$ volta oppure ogni volta, cioè $N$.
+
+È possibile constatare come questo algoritmo lavori in maniera lineare rispetto alla dimensione dell'input.
 \end{document}
