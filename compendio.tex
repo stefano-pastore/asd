@@ -7,25 +7,33 @@
 \usepackage{amssymb}
 \usepackage{amsthm}
 \usepackage{array}
-\usepackage{listings}
-\usepackage{centernot}
-\usepackage{mathtools}
 \usepackage{bm}
-\usepackage[table]{xcolor}
 \usepackage{breqn}
-\usepackage{color}
-\usepackage{hyperref}
-\usepackage{pgfplots}
-\usepackage{tcolorbox}
-\usepackage{subcaption}
-\usepackage{multicol}
-\usepackage{enumitem}
 \usepackage[makeroom]{cancel}
+\usepackage[font={footnotesize,it},width=.5\textwidth]{caption}
+\usepackage{centernot}
+\usepackage{colortbl}
+\usepackage{enumitem}
+\usepackage{fancybox}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{mathtools}
+\usepackage{multicol}
+\usepackage{pgfplots}
+\usepackage{subcaption}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usepackage{forest}
+
 \pgfplotsset{compat=1.12}
+\usetikzlibrary{fadings}
+\tikzfading[name=fade out,
+inner color=transparent!0, outer color=transparent!100]
 \usetikzlibrary{positioning}
 \usetikzlibrary{decorations.markings}
 \usetikzlibrary{shapes.multipart, calc}
-\usepackage[font={footnotesize,it},width=.5\textwidth]{caption}
+\usetikzlibrary{shapes,arrows}
+
 
 \hypersetup{%
 	colorlinks=true,
@@ -70,12 +78,19 @@
 	title=\lstname
 }
 
+\tikzstyle{decision} = [diamond, draw, fill=red!20, 
+text width=5em, text badly centered, node distance=3cm, inner sep=0pt]
+\tikzstyle{block} = [rectangle, draw, fill=blue!20, 
+text width=5em, text centered, rounded corners, minimum height=4em]
+\tikzstyle{line} = [draw, -latex']
+\tikzstyle{cloud} = [draw, ellipse,fill=red!20, node distance=3cm,
+minimum height=2em]
+
 %opening
 \title{Raccolta di appunti per il corso di\\\Huge{Algoritmi e Strutture Dati}}
 \author{Stefano Pastore}
 
 \begin{document}
- \rowcolors{2}{gray!25}{white}
 
 \maketitle
 \pagebreak
@@ -85,6 +100,62 @@
 \section*{Disclaimer e licenza}
 \paragraph*{} Questi appunti sono rilasciati sotto licenza \href{https://creativecommons.org/licenses/by-nc-sa/4.0/}{Creative Commons 4.0 by-nc-sa}.
 \paragraph*{} Si fa presente che questo documento viene stilato senza pretese di assoluta correttezza né di esaustività. Qualora si siano rinvenuti degli errori, è possibile segnalarli all'indirizzo\linebreak \href{mailto:ste.pastore@studenti.unina.it}{ste.pastore@studenti.unina.it}. È consultabile il repository di tutto il materiale prodotto a disposizione di chiunque su \href{https://github.com/stefano-pastore/asd}{Github}.
+\begin{figure}[hb]
+	\centering
+	\vspace{4em}
+\begin{tikzpicture}
+\foreach \c [count=\i from 0] in {white,red!75!black,blue!25,orange}{
+	
+	\tikzset{xshift={mod(\i,2)*3cm}, yshift=-floor(\i/2)*3cm}
+	\colorlet{cup}{\c}
+	
+	% Saucer
+	\begin{scope}[shift={(0,-1-1/16)}]
+	\fill [black!87.5, path fading=fade out] 
+	(0,-2/8) ellipse [x radius=6/4, y radius=3/4];
+	\fill [cup, postaction={left color=black, right color=white, opacity=1/3}] 
+	(0,0) ++(180:5/4) arc (180:360:5/4 and 5/8+1/16);
+	\fill [cup, postaction={left color=black!50, right color=white, opacity=1/3}] 
+	(0,0) ellipse [x radius=5/4, y radius=5/8];
+	\fill [cup, postaction={left color=white, right color=black, opacity=1/3}]
+	(0,1/16) ellipse [x radius=5/4/2, y radius=5/8/2];
+	\fill [cup, postaction={left color=black, right color=white, opacity=1/3}] 
+	(0,0) ellipse [x radius=5/4/2-1/16, y radius=5/8/2-1/16];
+	\end{scope} 
+	
+	% Handle
+	\begin{scope}[shift=(10:7/8), rotate=-30, yslant=1/2, xslant=-1/8]
+	\fill [cup, postaction={top color=black, bottom color=white, opacity=1/3}] 
+	(0,0) arc (130:-100:3/8 and 1/2) -- ++(0,1/4) arc (-100:130:1/8 and 1/4)
+	-- cycle;
+	\fill [cup, postaction={top color=white, bottom color=black, opacity=1/3}] 
+	(0,0) arc (130:-100:3/8 and 1/2) -- ++(0,1/32) arc (-100:130:1/4 and 1/3)
+	-- cycle;
+	\end{scope}
+	
+	% Cup
+	\fill [cup!25!black, path fading=fade out] 
+	(0,-1-1/16) ellipse [x radius=3/4, y radius=1/3];
+	\fill [cup, postaction={left color=black, right color=white, opacity=1/3/2},
+	postaction={bottom color=black, top color=white, opacity=1/3/2}] 
+	(-1,0) arc (180:360:1 and 5/4);
+	\fill [cup, postaction={left color=white, right color=black, opacity=1/3}] 
+	(0,0) ellipse [x radius=1, y radius=1/2];
+	\fill [cup, postaction={left color=black, right color=white, opacity=1/3/2},
+	postaction={bottom color=black, top color=white, opacity=1/3/2}] 
+	(0,0) ellipse [x radius=1-1/16, y radius=1/2-1/16];
+	
+	% Coffee
+	\begin{scope}
+	\clip ellipse [x radius=1-1/16, y radius=1/2-1/16];
+	\fill [brown!25!black] 
+	(0,-1/4) ellipse [x radius=3/4, y radius=3/8];
+	\fill [brown!50!black, path fading=fade out] 
+	(0,-1/4) ellipse [x radius=3/4, y radius=3/8];
+	\end{scope}
+}
+\end{tikzpicture}
+\end{figure}
 \pagebreak
 \section{Definizioni basilari}
 \subsection{Algoritmi e complessità}
@@ -621,4 +692,157 @@ $T(n) = c_1 \cdot n + c_2 \cdot (n-1) + c_3 \cdot (n-1) + c_4 \cdot \sum_{j=2}^{
 	= {n^2\cdot \left(\dfrac{c_4+c_5+c_6}{4}\right) + n\cdot \left[\dfrac{4\cdot (c_1+c_2+c_3-c_7) + c_4- 3(c_5+c_6)}{4}\right]-\left(\dfrac{2\cdot (c_2+c_3+c_7)-(c_4+c_5+c_6)}{2}\right)}
 	= an^2+bn+c = \Theta(n^2)
 \end{dmath*}
+\subsection{Complessità dei blocchi in construtti del linguaggio}
+\paragraph*{}Nelle prossime sezioni analizziamo un semplice metodo per stimare il limite asintotico superiore del tempo di esecuzione di algoritmi iterativi. In particolare diamo un'occhiata alla stima del limite superiore per le operazioni elementari e per le strutture di controllo, che spesso le accolgono.\\\\La ricerca di un limite superiore che funga da stima, non garantisce di trovare la funzione esatta del tempo di esecuzione e può talora risultare grossolana.
+\subsection{Operazioni semplici}
+\paragraph*{}Possiamo definire come \textbf{operazioni semplici} le seguenti:
+\begin{itemize}
+	\item operazioni aritmetiche
+	\item operazioni logiche
+	\item confronti
+	\item assegnamenti (che non coinvolgano chiamate a funzione)
+	\item operazioni di lettura
+	\item operazioni di controllo \texttt{break}, \texttt{continue}, \texttt{return}
+\end{itemize}
+Ognuna di queste viene eseguita in tempo costante, pertanto $T(n) = \Theta(1) \Rightarrow T(n) = O(1)$.
+\subsubsection{Costrutto \texttt{IF-THEN-ELSE}}
+\paragraph*{}Tipicamente questo costrutto è impiegato per modificare l'iter strettamente sequenziale dell'algoritmo e coinvolge la valutazione della veridicità di una condizione al fine di poter discriminare quale ramo di computazione intraprendere.
+\begin{lstlisting}[caption={Esempio di \texttt{IF-THEN-ELSE}},label={lst:ifthenelse_algo}]
+IF P(n) THEN
+	<istruzione1>
+	<istruzione2>
+	...
+	<istruzioneK>
+ELSE
+	<istruzioneK+1>
+	<istruzioneK+2>
+	...
+	<istruzioneN>
+\end{lstlisting}
+È da chiarire che nell'esempio \ref{lst:ifthenelse_algo} sopra riportato \texttt{P(n)} non rappresenta una chiamata a funzione, bensì la valutazione del predicato \texttt{P} sull'input \texttt{n}. Proprio come lo schema in figura \ref{fig:ifthenelse} rende evidente, la stima del limite superiore asintotico di un blocco \texttt{IF-THEN-ELSE} è dato $O(\max\{f(n), g(n)\})$.
+
+\begin{figure}[hb]
+	\centering
+	\begin{tikzpicture}[node distance = 3.5cm, auto]
+		\node[decision] (cond) {condizione};
+		\node[block, below left of=cond, label={180:$O(f(n))$}] (branchA) {Blocco A};
+		\node[block, below right of=cond,label={360:$O(g(n))$}] (branchB) {Blocco B};
+		
+		\path[line] (cond) -| node [near end, left=2pt] {\texttt{true}}(branchA);
+		\path[line] (cond) -| node [near end, right=2pt] {\texttt{false}}(branchB);
+		
+	\end{tikzpicture}
+	\caption{Schematizzazione del costrutto \texttt{IF-THEN-ELSE}.}
+	\label{fig:ifthenelse}
+\end{figure}
+Infatti consideriamo un esempio pratico come quello seguente:
+\begin{lstlisting}[caption={Esempio di \texttt{IF-THEN-ELSE}},label={lst:ifthenelse2_algo}]
+IF A[1][i] = 0 THEN
+	FOR i = i TO n
+		FOR j = 1 TO n
+			A[i][j] = 0
+ELSE
+	FOR i = 1 TO n
+		A[i][i] = 1
+\end{lstlisting}
+Volendo fare una stima ad occhio del frammento di codice in questione possiamo certamente dire che all'interno del ramo \texttt{IF} i due cicli \texttt{FOR} innestati costano $O(n^2)$, mentre il ciclo del ramo \texttt{ELSE} è stimato a $O(n)$. Pertanto $T(n) = \max\{O(n^2), O(n)\} = O(n^2)$.
+\pagebreak
+\subsubsection{Costrutto \texttt{FOR}}I cicli sono costrutti che consentono di automatizzare la ripetizione di certe operazioni a patto che una certa condizione specificata permanga vera.
+\begin{figure}[hb]
+	\centering
+	\begin{tikzpicture}[node distance = 2.5cm, auto]
+	\node[block, label={360:$O(1)$}] (init) {inizializza};
+	\node[decision, below of=init, label={360:$O(1)$}] (cond) {condizione};
+	\node[block, below of=cond, label={360:$O(1)$}] (corpo) {corpo del ciclo};
+	\node[block, below of=corpo,label={360:$O(1)$}] (reinit) {re-inizializza};
+	
+	\path[line] (init) -- (cond);
+	\path[line] (cond) -- (corpo);
+	\path[line] (corpo) -- (reinit);
+	\path[line] (reinit.west) -- (cond.west);
+	
+	\end{tikzpicture}
+	\caption{Schematizzazione del costrutto \texttt{FOR}.}
+	\label{fig:ciclofor}
+\end{figure}
+
+\subsubsection{Costrutto \texttt{WHILE}}
+\subsubsection{Blocchi sequenziali}
+\subsubsection{Chiamata a funzione}
+\subsubsection{Chiamata a funzione ricorsiva}
+\paragraph*{} Supponiamo di dovere analizzare la complessità del seguente algoritmo:
+\begin{lstlisting}[caption={Esempio di algoritmo ricorsivo},label={lst:rec_algo}]
+RecAlgo(n)
+	<istruzione1>
+	<istruzione2>
+	...
+	<istruzioneK>
+	y = RecAlgo(z(n))
+	<istruzioneK+1>
+	<istruzioneK+2>
+	...
+	<istruzioneN>
+\end{lstlisting}
+e sia $z(n)$ la funzione che prende in ingresso l'input della chiamata corrente, lo trasforma e fa da input per la chiamata successiva. Come si fa ad arrivare ad una forma chiusa che dia un'idea della crescita asintotica dell'algoritmo?
+\paragraph*{}Si utilizzano le \textbf{equazioni di ricorrenza}, che sono un metodo matematico per descrivere come una funzione distribuisce il suo input $N$ alle sotto-chiamate e quante operazioni ad ogni iterazione ricorsiva l'algoritmo esegue sulla base del suo rispettivo input.
+\paragraph{La funzione fattoriale} La funzione $n!$ è detta \textbf{fattoriale} ed è definita come il prodotto degli interi che vanno da $1$ ad $n$. Posta sotto forma di equazione di ricorrenza, essa ha questa definizione:
+\[n! = \left\{
+\begin{array}{lr}
+n\cdot (n-1)& \text{ se } n > 1\\ \rowcolor{white}
+1 & \text{ se } n = 1
+\end{array}
+\right.
+\]
+che, posta in termini di funzione asintotica, possiamo riscrivere come:
+\[T(n) = \left\{
+\begin{array}{lr} \rowcolor{white}
+\Theta(1) + T(n-1) & \text{ se } n > 1\\ 
+\Theta(1) & \text{ se } n = 1
+\end{array}
+\right.
+\]
+Ma a questo punto come la trovo la forma chiusa di questa equazione di ricorrenza? Possiamo facilitarci il compito ricorrendo ad un albero di ricorrenza. Graficamente ogni cerchio corrisponde ad una chiamata alla funzione, all'interno ci poniamo il numero di operazioni che quella chiamata effettua a partire dalla definizione $T(n)$ sino ad arrivare al caso base. Esemplifichiamo con un esempio.
+\paragraph{Esempio} Trovare la crescita asintotica di una funzione ricorsiva, avente la seguente equazione di ricorrenza:
+\[T(n) = \left\{
+\begin{array}{lr} 
+3T\left(\dfrac{n}{4}\right) + n & \text{ se } n > 1\\ \rowcolor{white}
+1 & \text{ se } n = 1
+\end{array}
+\right.
+\]
+
+\begin{figure}[hb]
+	\centering
+	\begin{forest}
+		[n, for tree={circle, draw, math content, s sep=.4em}
+		[\frac{n}{4}, name=a
+		[\frac{n}{4^2}, name=d
+		[\dots
+		[,phantom] 
+		[\frac{n}{4^i}, name=p]
+		[\frac{n}{4^i}, name=q]
+		[\frac{n}{4^i}, name=r]]]
+		[\frac{n}{4^2}, name=e
+		[\dots
+		[,phantom] 
+		[\frac{n}{4^i}, name=s]
+		[\frac{n}{4^i}, name=t]
+		[\frac{n}{4^i}, name=u]]]
+		[\frac{n}{4^2}, name=f
+		[\dots
+			[,phantom] 
+		[\frac{n}{4^i}, name=m]
+		[\frac{n}{4^i}, name=n]
+		[\frac{n}{4^i}, name=o]]]]
+		[\frac{n}{4}, name=b
+		[\frac{n}{4^2}, name=g]
+		[\frac{n}{4^2}, name=h]
+		[\frac{n}{4^2}, name=i]]
+		[\frac{n}{4}, name=c
+		[\frac{n}{4^2}, name=j]
+		[\frac{n}{4^2}, name=k]
+		[\frac{n}{4^2}, name=l]]]
+	\end{forest}
+\end{figure}
+
 \end{document}
